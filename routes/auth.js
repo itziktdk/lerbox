@@ -31,7 +31,7 @@ router.post('/verify-otp', async (req, res) => {
     user.otpExpires = undefined;
     await user.save();
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-    res.json({ token, user: { _id: user._id, name: user.name, role: user.role, phone: user.phone, classId: user.classId, schoolId: user.schoolId, points: user.points, streaks: user.streaks, badges: user.badges, avatar: user.avatar } });
+    res.json({ token, user: { _id: user._id, name: user.name, role: user.role, phone: user.phone, classId: user.classId, schoolId: user.schoolId, points: user.points, streaks: user.streaks, badges: user.badges, avatar: user.avatar, parentOf: user.parentOf } });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -44,7 +44,7 @@ router.post('/demo-login', async (req, res) => {
     const user = await User.findOne({ role }).populate('classId');
     if (!user) return res.status(404).json({ error: 'אין משתמש דמו לתפקיד זה' });
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-    res.json({ token, user: { _id: user._id, name: user.name, role: user.role, phone: user.phone, classId: user.classId, schoolId: user.schoolId, points: user.points, streaks: user.streaks, badges: user.badges, avatar: user.avatar } });
+    res.json({ token, user: { _id: user._id, name: user.name, role: user.role, phone: user.phone, classId: user.classId, schoolId: user.schoolId, points: user.points, streaks: user.streaks, badges: user.badges, avatar: user.avatar, parentOf: user.parentOf } });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
