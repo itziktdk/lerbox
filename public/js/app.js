@@ -1422,6 +1422,14 @@ async function createAnnouncement() {
   } catch (e) { toast(e.message, 'error'); }
 }
 
+// ===== SPLASH =====
+function dismissSplash() {
+  const s = document.getElementById('splash-screen');
+  if (s) { s.classList.add('fade-out'); setTimeout(() => s.remove(), 600); }
+  const st = document.getElementById('splash-styles');
+  if (st) setTimeout(() => st.remove(), 700);
+}
+
 // ===== INIT =====
 (function init() {
   const token = localStorage.getItem('lerbox_token');
@@ -1433,4 +1441,5 @@ async function createAnnouncement() {
   } else {
     showPage('landing');
   }
+  dismissSplash();
 })();
