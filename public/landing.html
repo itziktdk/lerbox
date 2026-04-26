@@ -1,0 +1,653 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LerBox — תקשורת חכמה לבית הספר</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700;800;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+--primary:#4F46E5;--primary-dark:#4338CA;--purple:#7C3AED;
+--green:#10B981;--gold:#F59E0B;--bg:#F9FAFB;
+--text:#1F2937;--text-light:#6B7280;--white:#fff;
+--radius:16px;--radius-sm:12px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'Heebo',sans-serif;color:var(--text);background:var(--bg);overflow-x:hidden;line-height:1.6}
+.en{font-family:'Inter','Heebo',sans-serif}
+
+/* NAV */
+nav{position:fixed;top:0;right:0;left:0;z-index:100;padding:1rem 2rem;transition:all .3s}
+nav.scrolled{background:rgba(255,255,255,.85);backdrop-filter:blur(20px);box-shadow:0 1px 30px rgba(79,70,229,.08)}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+.nav-logo{font-weight:800;font-size:1.5rem;background:linear-gradient(135deg,var(--primary),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:2rem;list-style:none;align-items:center}
+.nav-links a{text-decoration:none;color:var(--text);font-weight:500;font-size:.95rem;transition:color .2s}
+.nav-links a:hover{color:var(--primary)}
+.nav-cta{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff!important;-webkit-text-fill-color:#fff!important;padding:.6rem 1.4rem;border-radius:50px;font-weight:600;transition:transform .2s,box-shadow .2s}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(79,70,229,.35)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:8px}
+.hamburger span{width:24px;height:2.5px;background:var(--text);border-radius:2px;transition:all .3s}
+.mobile-menu{display:none;position:fixed;inset:0;background:rgba(255,255,255,.97);backdrop-filter:blur(20px);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-size:1.3rem;text-decoration:none;color:var(--text);font-weight:600}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.9rem 2.2rem;border-radius:50px;font-weight:700;font-size:1.05rem;text-decoration:none;transition:all .3s;border:none;cursor:pointer;font-family:inherit}
+.btn-primary{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;box-shadow:0 4px 20px rgba(79,70,229,.3)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 35px rgba(79,70,229,.45)}
+.btn-outline{background:transparent;color:var(--primary);border:2px solid var(--primary)}
+.btn-outline:hover{background:var(--primary);color:#fff}
+.btn-white{background:#fff;color:var(--primary);box-shadow:0 4px 20px rgba(0,0,0,.1)}
+.btn-white:hover{transform:translateY(-3px);box-shadow:0 8px 35px rgba(0,0,0,.15)}
+
+/* SECTIONS */
+section{padding:6rem 2rem}
+.container{max-width:1200px;margin:0 auto}
+.section-badge{display:inline-block;padding:.4rem 1.2rem;border-radius:50px;font-size:.85rem;font-weight:600;margin-bottom:1rem}
+.section-title{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;line-height:1.25;margin-bottom:1rem}
+.section-sub{font-size:1.15rem;color:var(--text-light);max-width:600px;line-height:1.7}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:6rem;background:linear-gradient(160deg,#EEF2FF 0%,#F5F3FF 30%,#FDF4FF 60%,var(--bg) 100%)}
+.hero::before{content:'';position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(79,70,229,.12),transparent 70%);top:-100px;left:-200px}
+.hero::after{content:'';position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%);bottom:-100px;right:-150px}
+.hero .container{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;position:relative;z-index:1}
+.hero-text h1{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;line-height:1.15;margin-bottom:1.5rem}
+.hero-text h1 span{background:linear-gradient(135deg,var(--primary),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-text p{font-size:1.25rem;color:var(--text-light);margin-bottom:2rem;line-height:1.7}
+.hero-buttons{display:flex;gap:1rem;flex-wrap:wrap}
+.hero-visual{position:relative}
+.hero-mockup{width:100%;max-width:500px;margin:0 auto}
+.phone-frame{background:linear-gradient(145deg,#1a1a2e,#16213e);border-radius:40px;padding:12px;box-shadow:0 30px 80px rgba(79,70,229,.25),0 0 0 1px rgba(255,255,255,.1);position:relative;overflow:hidden}
+.phone-screen{background:#fff;border-radius:30px;overflow:hidden;aspect-ratio:9/17;position:relative}
+.phone-notch{position:absolute;top:0;left:50%;transform:translateX(-50%);width:40%;height:28px;background:#1a1a2e;border-radius:0 0 20px 20px;z-index:2}
+.screen-content{padding:40px 20px 20px;background:linear-gradient(180deg,#EEF2FF,#fff)}
+.screen-header{text-align:center;margin-bottom:16px}
+.screen-header h3{font-size:1rem;font-weight:700;color:var(--primary)}
+.screen-header p{font-size:.7rem;color:var(--text-light)}
+.screen-card{background:#fff;border-radius:12px;padding:12px;margin-bottom:10px;box-shadow:0 2px 10px rgba(0,0,0,.06);display:flex;align-items:center;gap:10px}
+.screen-avatar{width:36px;height:36px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;color:#fff;flex-shrink:0}
+.screen-card-text{flex:1}
+.screen-card-text strong{font-size:.75rem;display:block}
+.screen-card-text span{font-size:.65rem;color:var(--text-light)}
+.screen-badge{padding:2px 8px;border-radius:20px;font-size:.6rem;font-weight:600}
+.floating-badge{position:absolute;background:#fff;border-radius:var(--radius-sm);padding:.7rem 1rem;box-shadow:0 10px 40px rgba(0,0,0,.12);display:flex;align-items:center;gap:.5rem;font-weight:600;font-size:.85rem;animation:float 3s ease-in-out infinite;z-index:2}
+.floating-badge.b1{top:10%;left:-10%;animation-delay:0s}
+.floating-badge.b2{bottom:20%;right:-8%;animation-delay:1s}
+.floating-badge.b3{top:50%;left:-15%;animation-delay:2s}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+
+/* PROBLEM */
+.problem{background:linear-gradient(135deg,#1F2937,#111827);color:#fff;text-align:center;position:relative;overflow:hidden}
+.problem::before{content:'';position:absolute;width:100%;height:100%;background:url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%234F46E5' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")}
+.problem .section-title{color:#fff}
+.problem .section-sub{color:#9CA3AF;margin:0 auto 3rem}
+.problem-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;margin-top:2rem}
+.problem-card{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.08);border-radius:var(--radius);padding:2rem;text-align:center;transition:all .3s}
+.problem-card:hover{background:rgba(255,255,255,.08);transform:translateY(-4px)}
+.problem-card .icon{font-size:3rem;margin-bottom:1rem}
+.problem-card h3{font-size:1.2rem;margin-bottom:.5rem}
+.problem-card p{color:#9CA3AF;font-size:.95rem}
+
+/* FEATURES */
+.features{text-align:center}
+.features .section-sub{margin:0 auto 3rem}
+.feature-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:1.5rem}
+.feature-card{background:#fff;border-radius:var(--radius);padding:2rem;text-align:right;transition:all .4s;border:1px solid rgba(79,70,229,.06);position:relative;overflow:hidden}
+.feature-card::before{content:'';position:absolute;top:0;right:0;width:100%;height:3px;background:linear-gradient(90deg,var(--primary),var(--purple));transform:scaleX(0);transform-origin:right;transition:transform .4s}
+.feature-card:hover{transform:translateY(-6px);box-shadow:0 20px 60px rgba(79,70,229,.12)}
+.feature-card:hover::before{transform:scaleX(1)}
+.feature-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;margin-bottom:1.2rem}
+.feature-icon svg{width:28px;height:28px}
+.feature-card h3{font-size:1.15rem;font-weight:700;margin-bottom:.5rem}
+.feature-card p{color:var(--text-light);font-size:.95rem;line-height:1.6}
+
+/* GAMIFICATION */
+.gamification{background:linear-gradient(160deg,#EEF2FF,#F5F3FF,#FDF4FF);position:relative;overflow:hidden}
+.gamification .container{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.game-visual{display:flex;flex-direction:column;gap:1.2rem}
+.game-card{background:#fff;border-radius:var(--radius);padding:1.5rem;box-shadow:0 4px 20px rgba(0,0,0,.06);display:flex;align-items:center;gap:1rem;transition:transform .3s}
+.game-card:hover{transform:translateX(-5px)}
+.game-rank{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;flex-shrink:0}
+.game-card-info h4{font-weight:700;font-size:1rem}
+.game-card-info p{color:var(--text-light);font-size:.85rem}
+.game-points{margin-right:auto;font-weight:800;color:var(--primary);font-size:1.1rem;direction:ltr}
+.badge-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
+.badge-item{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:transform .3s}
+.badge-item:hover{transform:scale(1.15)}
+.streak-bar{background:#fff;border-radius:var(--radius-sm);padding:1rem 1.5rem;box-shadow:0 4px 20px rgba(0,0,0,.06);display:flex;align-items:center;gap:1rem}
+.streak-bar .fire{font-size:1.5rem}
+.streak-fill{flex:1;height:8px;background:#E5E7EB;border-radius:4px;overflow:hidden;position:relative}
+.streak-fill-inner{height:100%;width:75%;background:linear-gradient(90deg,var(--gold),#F97316);border-radius:4px;animation:grow 2s ease-out}
+@keyframes grow{from{width:0}to{width:75%}}
+
+/* AUDIENCE SECTIONS */
+.audience{overflow:hidden}
+.audience .container{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center}
+.audience.reverse .container{direction:ltr}
+.audience-visual{position:relative}
+.audience-mockup{background:#fff;border-radius:var(--radius);padding:2rem;box-shadow:0 15px 50px rgba(0,0,0,.08)}
+.audience-list{list-style:none;display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem}
+.audience-list li{display:flex;align-items:start;gap:.8rem;font-size:1.05rem}
+.audience-list li svg{width:24px;height:24px;flex-shrink:0;margin-top:2px}
+.check-icon{color:var(--green)}
+.audience-tag{display:inline-flex;align-items:center;gap:.4rem;padding:.4rem 1rem;border-radius:50px;font-size:.8rem;font-weight:600;margin-bottom:.5rem}
+/* Teacher */
+.teacher-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem}
+.teacher-cell{background:var(--bg);border-radius:12px;padding:1rem;text-align:center;transition:all .3s;cursor:pointer}
+.teacher-cell:hover{transform:scale(1.03)}
+.teacher-cell .name{font-weight:600;font-size:.85rem;margin-bottom:.5rem}
+.teacher-cell .status{padding:4px 10px;border-radius:20px;font-size:.7rem;font-weight:600;color:#fff}
+.s-present{background:var(--green)}
+.s-late{background:var(--gold)}
+.s-absent{background:#EF4444}
+
+/* STATS */
+.stats{background:linear-gradient(135deg,var(--primary),var(--purple));color:#fff;text-align:center;position:relative;overflow:hidden}
+.stats::before{content:'';position:absolute;inset:0;background:url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='50' cy='50' r='40' fill='none' stroke='rgba(255,255,255,0.05)' stroke-width='1'/%3E%3C/svg%3E")}
+.stats .container{position:relative;z-index:1}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:2rem;margin-top:3rem}
+.stat-item h2{font-size:clamp(2.5rem,6vw,4rem);font-weight:900;direction:ltr;display:inline-block}
+.stat-item p{font-size:1.1rem;opacity:.85;margin-top:.3rem}
+
+/* CTA */
+.cta-section{text-align:center;padding:7rem 2rem}
+.cta-section .section-title{margin-bottom:1rem}
+.cta-section .section-sub{margin:0 auto 2.5rem}
+.cta-form{max-width:500px;margin:0 auto;display:flex;flex-direction:column;gap:1rem}
+.cta-input{padding:1rem 1.5rem;border-radius:14px;border:2px solid #E5E7EB;font-size:1rem;font-family:inherit;transition:border-color .3s;text-align:right}
+.cta-input:focus{outline:none;border-color:var(--primary);box-shadow:0 0 0 4px rgba(79,70,229,.1)}
+.cta-form .btn{justify-content:center;width:100%;padding:1.1rem}
+
+/* FOOTER */
+footer{background:#111827;color:#9CA3AF;padding:3rem 2rem;text-align:center}
+footer .container{max-width:1200px;margin:0 auto}
+.footer-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+.footer-logo{font-weight:800;font-size:1.3rem;color:#fff}
+.footer-links{display:flex;gap:1.5rem;list-style:none}
+.footer-links a{color:#9CA3AF;text-decoration:none;font-size:.9rem;transition:color .2s}
+.footer-links a:hover{color:#fff}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding-top:1.5rem;font-size:.85rem}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(30px);transition:all .8s cubic-bezier(.16,1,.3,1)}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-delay-1{transition-delay:.1s}
+.reveal-delay-2{transition-delay:.2s}
+.reveal-delay-3{transition-delay:.3s}
+.reveal-delay-4{transition-delay:.4s}
+.reveal-delay-5{transition-delay:.5s}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .hero .container,.gamification .container,.audience .container{grid-template-columns:1fr;text-align:center}
+  .hero-text h1{font-size:2.5rem}
+  .hero-buttons{justify-content:center}
+  .feature-grid{grid-template-columns:1fr}
+  .feature-card{text-align:center}
+  .hero-visual{order:-1}
+  .phone-frame{max-width:300px;margin:0 auto}
+  .floating-badge{display:none}
+  .audience .container{gap:2rem}
+  .audience.reverse .container{direction:rtl}
+  .section-sub{margin-right:auto;margin-left:auto}
+  .teacher-grid{grid-template-columns:repeat(3,1fr)}
+  .stats-grid{grid-template-columns:repeat(2,1fr)}
+  .footer-top{flex-direction:column;text-align:center}
+}
+@media(max-width:480px){
+  section{padding:4rem 1.2rem}
+  .teacher-grid{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo">LerBox</div>
+    <ul class="nav-links">
+      <li><a href="#features">תכונות</a></li>
+      <li><a href="#gamification">גיימיפיקציה</a></li>
+      <li><a href="#teachers">למורים</a></li>
+      <li><a href="#parents">להורים</a></li>
+      <li><a href="#students">לתלמידים</a></li>
+      <li><a href="#waitlist" class="nav-cta">הצטרפו עכשיו</a></li>
+    </ul>
+    <button class="hamburger" onclick="toggleMenu()" aria-label="תפריט">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#features" onclick="toggleMenu()">תכונות</a>
+  <a href="#gamification" onclick="toggleMenu()">גיימיפיקציה</a>
+  <a href="#teachers" onclick="toggleMenu()">למורים</a>
+  <a href="#parents" onclick="toggleMenu()">להורים</a>
+  <a href="#students" onclick="toggleMenu()">לתלמידים</a>
+  <a href="#waitlist" class="btn btn-primary" onclick="toggleMenu()">הצטרפו עכשיו</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-text">
+      <div class="section-badge" style="background:rgba(79,70,229,.1);color:var(--primary)">🚀 הדור הבא של תקשורת בית-ספרית</div>
+      <h1>בית הספר שלכם,<br><span>חכם יותר.</span></h1>
+      <p>תקשורת מורים-הורים-תלמידים במקום אחד. עם גיימיפיקציה שהופכת את הלמידה לחוויה.</p>
+      <div class="hero-buttons">
+        <a href="#waitlist" class="btn btn-primary">הצטרפו לרשימת ההמתנה ←</a>
+        <a href="#features" class="btn btn-outline">גלו עוד</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-badge b1">
+        <span style="color:var(--green)">✓</span> נוכחות עודכנה
+      </div>
+      <div class="floating-badge b2">
+        <span style="font-size:1.2rem">🏆</span> <span class="en">+50 XP</span>
+      </div>
+      <div class="floating-badge b3">
+        <span style="font-size:1.2rem">🔥</span> סטריק 7 ימים!
+      </div>
+      <div class="hero-mockup">
+        <div class="phone-frame">
+          <div class="phone-screen">
+            <div class="phone-notch"></div>
+            <div class="screen-content">
+              <div class="screen-header">
+                <h3>🎓 LerBox</h3>
+                <p>כיתה ו׳2 — בוקר טוב!</p>
+              </div>
+              <div class="screen-card">
+                <div class="screen-avatar" style="background:var(--green)">נ</div>
+                <div class="screen-card-text">
+                  <strong>נועה כהן</strong>
+                  <span>נוכחת • שיעור ראשון</span>
+                </div>
+                <span class="screen-badge" style="background:rgba(16,185,129,.1);color:var(--green)">✓ נוכח</span>
+              </div>
+              <div class="screen-card">
+                <div class="screen-avatar" style="background:var(--gold)">ד</div>
+                <div class="screen-card-text">
+                  <strong>דני לוי</strong>
+                  <span>איחור • 08:15</span>
+                </div>
+                <span class="screen-badge" style="background:rgba(245,158,11,.1);color:var(--gold)">⏰ איחור</span>
+              </div>
+              <div class="screen-card">
+                <div class="screen-avatar" style="background:var(--primary)">מ</div>
+                <div class="screen-card-text">
+                  <strong>מיכל אברהם</strong>
+                  <span>🏆 +25 נקודות היום</span>
+                </div>
+                <span class="screen-badge" style="background:rgba(79,70,229,.1);color:var(--primary)">⭐ מצטיינת</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="problem">
+  <div class="container">
+    <div class="section-badge" style="background:rgba(255,255,255,.1);color:#fff">😤 מכירים את זה?</div>
+    <h2 class="section-title">השיטות הישנות כבר לא עובדות</h2>
+    <p class="section-sub">בתי ספר בישראל עדיין תקועים בכלים מיושנים. הגיע הזמן לשינוי.</p>
+    <div class="problem-cards">
+      <div class="problem-card reveal">
+        <div class="icon">📱</div>
+        <h3>קבוצות WhatsApp כאוטיות</h3>
+        <p>מאות הודעות ביום, מידע חשוב נבלע, הורים מתוסכלים. אין סדר, אין פוקוס.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-1">
+        <div class="icon">📋</div>
+        <h3>מש"ב מיושן</h3>
+        <p>מערכת ניהול בית-ספרית מ-2005. איטית, מסורבלת, ולא מותאמת לעידן הנייד.</p>
+      </div>
+      <div class="problem-card reveal reveal-delay-2">
+        <div class="icon">😴</div>
+        <h3>תלמידים לא מעורבים</h3>
+        <p>ילדים גדלים על TikTok ו-Roblox, אבל בבית ספר — אפס גיימיפיקציה, אפס מוטיבציה.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features" id="features">
+  <div class="container">
+    <div class="section-badge" style="background:rgba(79,70,229,.08);color:var(--primary)">✨ הכל בתוך אפליקציה אחת</div>
+    <h2 class="section-title">תכונות שישנו את בית הספר</h2>
+    <p class="section-sub">כל מה שצריך למורים, הורים ותלמידים — במקום אחד, בעיצוב שמחייך.</p>
+    <div class="feature-grid">
+      <div class="feature-card reveal">
+        <div class="feature-icon" style="background:rgba(16,185,129,.1)">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="var(--green)"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+        </div>
+        <h3>נוכחות ב-3 טאפים</h3>
+        <p>נוכח, איחור, נעדר — בלחיצה. ההורים מקבלים עדכון מיידי. בלי ניירת, בלי בזבוז זמן.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-1">
+        <div class="feature-icon" style="background:rgba(79,70,229,.1)">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="var(--primary)"><path stroke-linecap="round" stroke-linejoin="round" d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+        </div>
+        <h3>מעקב התנהגות</h3>
+        <p>דיווח מידי על התנהגות, עם מגמות ותובנות. המורה רואה את התמונה המלאה.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-2">
+        <div class="feature-icon" style="background:rgba(245,158,11,.1)">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="var(--gold)"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0016.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a6.003 6.003 0 01-5.54 0"/></svg>
+        </div>
+        <h3>גיימיפיקציה</h3>
+        <p>נקודות, תגים, סטריקים ותחרויות. התלמידים רוצים להצליח — לא כי הם חייבים, כי זה כיף.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-3">
+        <div class="feature-icon" style="background:rgba(124,58,237,.1)">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="var(--purple)"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z"/></svg>
+        </div>
+        <h3>לוח הורים</h3>
+        <p>כל המידע על הילד — נוכחות, ציונים, הודעות, שיעורי בית — בלוח אחד ברור ופשוט.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-4">
+        <div class="feature-icon" style="background:rgba(239,68,68,.1)">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#EF4444"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25"/></svg>
+        </div>
+        <h3>ניהול שיעורי בית</h3>
+        <p>מורים מפרסמים, תלמידים מסמנים השלמה, הורים עוקבים. שקיפות מלאה.</p>
+      </div>
+      <div class="feature-card reveal reveal-delay-5">
+        <div class="feature-icon" style="background:rgba(6,182,212,.1)">
+          <svg fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="#06B6D4"><path stroke-linecap="round" stroke-linejoin="round" d="M10.34 15.84c-.688-.06-1.386-.09-2.09-.09H7.5a4.5 4.5 0 110-9h.75c.704 0 1.402-.03 2.09-.09m0 9.18c.253.962.584 1.892.985 2.783.247.55.06 1.21-.463 1.511l-.657.38c-.551.318-1.26.117-1.527-.461a20.845 20.845 0 01-1.44-4.282m3.102.069a18.03 18.03 0 01-.59-4.59c0-1.586.205-3.124.59-4.59m0 9.18a23.848 23.848 0 018.835 2.535M10.34 6.66a23.847 23.847 0 008.835-2.535m0 0A23.74 23.74 0 0018.795 3m.38 1.125a23.91 23.91 0 011.014 5.395m-1.014 8.855c-.118.38-.245.754-.38 1.125m.38-1.125a23.91 23.91 0 001.014-5.395m0-3.46c.495.413.811 1.035.811 1.73 0 .695-.316 1.317-.811 1.73m0-3.46a24.347 24.347 0 010 3.46"/></svg>
+        </div>
+        <h3>הודעות בית ספריות</h3>
+        <p>הודעות ממוקדות לפי כיתה, שכבה או כל בית הספר. עם אישור קריאה מהורים.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GAMIFICATION -->
+<section class="gamification" id="gamification">
+  <div class="container">
+    <div>
+      <div class="section-badge" style="background:rgba(245,158,11,.1);color:var(--gold)">🏆 גיימיפיקציה שעובדת</div>
+      <h2 class="section-title">הפכו למידה<br>למשחק מנצח</h2>
+      <p class="section-sub">מערכת נקודות, תגים ולידרבורד שגורמת לתלמידים לרצות להשתתף, להצטיין ולהתחרות — בכיף.</p>
+      <div class="badge-row" style="margin-top:2rem">
+        <div class="badge-item" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A)">🌟</div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE)">📚</div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0)">🎯</div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">🧠</div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8)">❤️</div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#FEE2E2,#FECACA)">🔥</div>
+      </div>
+    </div>
+    <div class="game-visual reveal">
+      <div class="streak-bar">
+        <span class="fire">🔥</span>
+        <div>
+          <strong style="font-size:.85rem">סטריק נוכחות</strong>
+          <div style="font-size:.75rem;color:var(--text-light)">15 ימים רצוף!</div>
+        </div>
+        <div class="streak-fill"><div class="streak-fill-inner"></div></div>
+      </div>
+      <div class="game-card">
+        <div class="game-rank" style="background:linear-gradient(135deg,#F59E0B,#D97706)">1</div>
+        <div class="game-card-info">
+          <h4>נועה כהן</h4>
+          <p>כיתה ו׳2 • 🔥 סטריק 21 ימים</p>
+        </div>
+        <span class="game-points en">2,450</span>
+      </div>
+      <div class="game-card">
+        <div class="game-rank" style="background:linear-gradient(135deg,#9CA3AF,#6B7280)">2</div>
+        <div class="game-card-info">
+          <h4>דני לוי</h4>
+          <p>כיתה ו׳2 • ⭐ 12 תגים</p>
+        </div>
+        <span class="game-points en">2,180</span>
+      </div>
+      <div class="game-card">
+        <div class="game-rank" style="background:linear-gradient(135deg,#D97706,#92400E)">3</div>
+        <div class="game-card-info">
+          <h4>מיכל אברהם</h4>
+          <p>כיתה ו׳2 • 📚 3 מטלות השבוע</p>
+        </div>
+        <span class="game-points en">1,920</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR TEACHERS -->
+<section class="audience" id="teachers">
+  <div class="container">
+    <div>
+      <div class="audience-tag" style="background:rgba(79,70,229,.08);color:var(--primary)">👩‍🏫 למורים</div>
+      <h2 class="section-title">ניהול כיתה<br>בלי כאב ראש</h2>
+      <p class="section-sub" style="margin-bottom:1.5rem">נוכחות, התנהגות ותקשורת עם הורים — הכל מהנייד, בשלוש שניות.</p>
+      <ul class="audience-list">
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>נוכחות ב-3 לחיצות — נוכח, איחור, נעדר</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>דוחות התנהגות אוטומטיים להנהלה</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>הודעות ישירות להורים עם אישור קריאה</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>מעקב מטלות ושיעורי בית</li>
+      </ul>
+    </div>
+    <div class="audience-visual reveal">
+      <div class="audience-mockup">
+        <h4 style="margin-bottom:1rem;font-size:1rem">📋 נוכחות — כיתה ו׳2 — יום ראשון</h4>
+        <div class="teacher-grid">
+          <div class="teacher-cell"><div class="name">נועה כ.</div><div class="status s-present">נוכחת ✓</div></div>
+          <div class="teacher-cell"><div class="name">דני ל.</div><div class="status s-late">איחור ⏰</div></div>
+          <div class="teacher-cell"><div class="name">מיכל א.</div><div class="status s-present">נוכחת ✓</div></div>
+          <div class="teacher-cell"><div class="name">יוסי מ.</div><div class="status s-absent">נעדר ✗</div></div>
+          <div class="teacher-cell"><div class="name">שירה ב.</div><div class="status s-present">נוכחת ✓</div></div>
+          <div class="teacher-cell"><div class="name">עומר ד.</div><div class="status s-present">נוכח ✓</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOR PARENTS -->
+<section class="audience reverse" id="parents" style="background:linear-gradient(160deg,#F0FDF4,#ECFDF5,var(--bg))">
+  <div class="container">
+    <div class="audience-visual reveal">
+      <div class="audience-mockup">
+        <h4 style="margin-bottom:1rem;font-size:1rem">👨‍👩‍👧 לוח הורים — לירוי צדקה</h4>
+        <div style="display:flex;flex-direction:column;gap:.8rem">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(16,185,129,.06);border-radius:10px;border-right:3px solid var(--green)">
+            <div><strong style="font-size:.9rem">נוכחות היום</strong><br><span style="font-size:.8rem;color:var(--text-light)">הגיע בזמן ✓</span></div>
+            <span style="font-size:1.5rem">✅</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(79,70,229,.06);border-radius:10px;border-right:3px solid var(--primary)">
+            <div><strong style="font-size:.9rem">הודעה מהמחנכת</strong><br><span style="font-size:.8rem;color:var(--text-light)">לירוי השתתף יפה מאוד!</span></div>
+            <span style="font-size:1.5rem">💬</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(245,158,11,.06);border-radius:10px;border-right:3px solid var(--gold)">
+            <div><strong style="font-size:.9rem">שיעורי בית</strong><br><span style="font-size:.8rem;color:var(--text-light)">מתמטיקה — עמ׳ 45, תרגילים 1-5</span></div>
+            <span style="font-size:1.5rem">📝</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(124,58,237,.06);border-radius:10px;border-right:3px solid var(--purple)">
+            <div><strong style="font-size:.9rem">נקודות השבוע</strong><br><span style="font-size:.8rem;color:var(--text-light)">צבר 120 נקודות — מקום 3 בכיתה!</span></div>
+            <span style="font-size:1.5rem">🏆</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="audience-tag" style="background:rgba(16,185,129,.08);color:var(--green)">👨‍👩‍👧 להורים</div>
+      <h2 class="section-title">תמיד בתמונה,<br>בלי 200 הודעות</h2>
+      <p class="section-sub" style="margin-bottom:1.5rem">לוח אישי לכל ילד עם כל המידע שחשוב — נוכחות, ציונים, הודעות ומטלות.</p>
+      <ul class="audience-list">
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>עדכון נוכחות בזמן אמת</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>הודעות ישירות מהמורה</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>מעקב שיעורי בית והשלמות</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>תמונת מצב שבועית אוטומטית</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- FOR STUDENTS -->
+<section class="audience" id="students">
+  <div class="container">
+    <div>
+      <div class="audience-tag" style="background:rgba(124,58,237,.08);color:var(--purple)">🎮 לתלמידים</div>
+      <h2 class="section-title">בית ספר שכיף<br>להיות בו</h2>
+      <p class="section-sub" style="margin-bottom:1.5rem">דשבורד אישי, תחרויות, הישגים ופרסים. הלמידה הפכה למשחק.</p>
+      <ul class="audience-list">
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>דשבורד אישי עם נקודות ודירוג</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>תחרויות כיתתיות ובין-כיתתיות</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>תגים והישגים — אספנות דיגיטלית</li>
+        <li><svg class="check-icon" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75"/></svg>סטריקים שמתגמלים עקביות</li>
+      </ul>
+    </div>
+    <div class="audience-visual reveal">
+      <div class="audience-mockup" style="text-align:center;background:linear-gradient(160deg,#EEF2FF,#F5F3FF);border:none">
+        <div style="font-size:4rem;margin-bottom:.5rem">🎮</div>
+        <h3 style="font-size:1.5rem;margin-bottom:.5rem">ברוך הבא, לירוי!</h3>
+        <p style="color:var(--text-light);margin-bottom:1.5rem">מקום 3 בכיתה • רמה 12</p>
+        <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.5rem">
+          <div style="text-align:center">
+            <div style="font-size:2rem;font-weight:900;color:var(--primary)" class="en">1,920</div>
+            <div style="font-size:.8rem;color:var(--text-light)">נקודות</div>
+          </div>
+          <div style="width:1px;background:#E5E7EB"></div>
+          <div style="text-align:center">
+            <div style="font-size:2rem;font-weight:900;color:var(--gold)" class="en">15</div>
+            <div style="font-size:.8rem;color:var(--text-light)">תגים</div>
+          </div>
+          <div style="width:1px;background:#E5E7EB"></div>
+          <div style="text-align:center">
+            <div style="font-size:2rem;font-weight:900;color:var(--green)" class="en">21</div>
+            <div style="font-size:.8rem;color:var(--text-light)">סטריק 🔥</div>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:center;gap:.5rem">
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#FEF3C7,#FDE68A)">🌟</div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#DBEAFE,#BFDBFE)">📚</div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#D1FAE5,#A7F3D0)">🎯</div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">🧠</div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#FCE7F3,#FBCFE8)">❤️</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats">
+  <div class="container">
+    <h2 class="section-title">מספרים שמדברים</h2>
+    <p class="section-sub" style="color:rgba(255,255,255,.8);margin:0 auto">מערכת החינוך בישראל ענקית. היא מחכה למהפכה.</p>
+    <div class="stats-grid">
+      <div class="stat-item reveal">
+        <h2 class="en counter" data-target="2000000">0</h2><span style="font-size:1.5rem">+</span>
+        <p>תלמידים בישראל</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-1">
+        <h2 class="en counter" data-target="250000">0</h2><span style="font-size:1.5rem">+</span>
+        <p>מורים ומחנכים</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-2">
+        <h2 class="en counter" data-target="5000">0</h2><span style="font-size:1.5rem">+</span>
+        <p>בתי ספר</p>
+      </div>
+      <div class="stat-item reveal reveal-delay-3">
+        <h2 class="en" style="color:var(--gold)">0</h2>
+        <p>מערכות מגניבות — עד עכשיו 😉</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="waitlist">
+  <div class="container">
+    <div class="section-badge" style="background:rgba(79,70,229,.08);color:var(--primary)">🚀 השקה בקרוב</div>
+    <h2 class="section-title">הצטרפו לרשימת ההמתנה</h2>
+    <p class="section-sub">היו מבין הראשונים לחוות את LerBox. השאירו פרטים ונחזור אליכם.</p>
+    <form class="cta-form" onsubmit="handleSubmit(event)">
+      <input type="text" class="cta-input" placeholder="שם מלא" required>
+      <input type="email" class="cta-input" placeholder="כתובת אימייל" required>
+      <input type="tel" class="cta-input" placeholder="טלפון (אופציונלי)" dir="ltr" style="text-align:right">
+      <select class="cta-input" style="appearance:auto">
+        <option value="">אני...</option>
+        <option value="principal">מנהל/ת בית ספר</option>
+        <option value="teacher">מורה / מחנך/ת</option>
+        <option value="parent">הורה</option>
+        <option value="other">אחר</option>
+      </select>
+      <button type="submit" class="btn btn-primary">הצטרפו לרשימת ההמתנה 🚀</button>
+    </form>
+    <p id="formSuccess" style="display:none;margin-top:1rem;color:var(--green);font-weight:600;font-size:1.1rem">🎉 נרשמתם בהצלחה! נחזור אליכם בקרוב.</p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-top">
+      <div class="footer-logo">LerBox</div>
+      <ul class="footer-links">
+        <li><a href="#features">תכונות</a></li>
+        <li><a href="#teachers">למורים</a></li>
+        <li><a href="#parents">להורים</a></li>
+        <li><a href="#students">לתלמידים</a></li>
+        <li><a href="#waitlist">הצטרפו</a></li>
+      </ul>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 LerBox — תקשורת חכמה לבית הספר. כל הזכויות שמורות.</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav=document.getElementById('navbar');
+window.addEventListener('scroll',()=>{nav.classList.toggle('scrolled',window.scrollY>50)});
+
+// Mobile menu
+function toggleMenu(){document.getElementById('mobileMenu').classList.toggle('open')}
+
+// Reveal animations
+const observer=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');if(e.target.querySelector('.counter')){animateCounters(e.target)}}})} ,{threshold:0.15,rootMargin:'0px 0px -50px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Counter animation
+function animateCounters(parent){
+  parent.querySelectorAll('.counter').forEach(c=>{
+    const target=+c.dataset.target;if(!target)return;
+    const duration=2000,start=performance.now();
+    function update(now){
+      const p=Math.min((now-start)/duration,1);
+      const eased=1-Math.pow(1-p,3);
+      c.textContent=Math.floor(eased*target).toLocaleString();
+      if(p<1)requestAnimationFrame(update);
+      else c.textContent=target.toLocaleString();
+    }
+    requestAnimationFrame(update);
+  });
+}
+
+// Form
+function handleSubmit(e){
+  e.preventDefault();
+  e.target.style.display='none';
+  document.getElementById('formSuccess').style.display='block';
+}
+</script>
+</body>
+</html>
