@@ -1,4 +1,5 @@
-require('dotenv').config();
+try { require("dotenv").config(); } catch(e) {}
+
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -28,18 +29,41 @@ app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-// Connect MongoDB and start server (only when run directly)
-async function startServer(mongoUri) {
-  const uri = mongoUri || process.env.MONGODB_URI;
-  await mongoose.connect(uri);
-  console.log('✅ MongoDB connected');
-  const PORT = process.env.PORT || 3000;
-  const server = app.listen(PORT, () => console.log(`📦 LerBox running on port ${PORT}`));
-  return server;
+// Start server first, then connect MongoDB (so Azure health checks pass)
+const PORT = process.env.PORT || 3000;
+
+async function connectDB() {
+  const uri = process.env.MONGODB_URI;
+  if (!uri) {
+    console.warn('⚠️ No MONGODB_URI set — running without database');
+    return;
+  }
+  try {
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 15000 });
+    console.log('✅ MongoDB connected');
+  } catch (err) {
+    console.error('❌ MongoDB connection error:', err.message);
+    // Retry in background
+    setTimeout(() => connectDB(), 10000);
+  }
 }
 
 if (require.main === module) {
-  startServer().catch(err => console.error('Startup error:', err));
+  const server = app.listen(PORT, () => {
+    console.log(`📦 LerBox running on port ${PORT}`);
+    connectDB();
+  });
+}
+
+async function startServer(mongoUri) {
+  if (mongoUri) process.env.MONGODB_URI = mongoUri;
+  await connectDB();
+  return new Promise(resolve => {
+    const server = app.listen(PORT, () => {
+      console.log(`📦 LerBox running on port ${PORT}`);
+      resolve(server);
+    });
+  });
 }
 
 module.exports = { app, startServer };

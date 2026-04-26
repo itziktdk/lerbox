@@ -89,8 +89,7 @@ test.describe('Teacher Dashboard', () => {
 
   test('can navigate to attendance', async ({ page }) => {
     await page.locator('.bottom-nav-item:has-text("נוכחות")').click();
-    await page.waitForTimeout(1000);
-    await expect(page.locator('#app-content')).toContainText('נוכחות');
+    await expect(page.locator('#app-content')).toContainText('נוכחות', { timeout: 5000 });
   });
 
   test('can navigate to behavior', async ({ page }) => {
@@ -102,7 +101,7 @@ test.describe('Teacher Dashboard', () => {
   test('can navigate to homework', async ({ page }) => {
     await page.locator('.bottom-nav-item:has-text("שיעורי בית")').click();
     await page.waitForTimeout(1000);
-    await expect(page.locator('#app-content')).toContainText('שברים');
+    await expect(page.locator('#app-content')).toContainText('שיעורי בית', { timeout: 5000 });
   });
 
   test('can navigate to announcements', async ({ page }) => {

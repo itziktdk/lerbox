@@ -114,7 +114,7 @@ section{padding:6rem 2rem}
 .game-rank{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;color:#fff;flex-shrink:0}
 .game-card-info h4{font-weight:700;font-size:1rem}
 .game-card-info p{color:var(--text-light);font-size:.85rem}
-.game-points{margin-right:auto;font-weight:800;color:var(--primary);font-size:1.1rem;direction:ltr}
+.game-points{margin-inline-start:auto;font-weight:800;color:var(--primary);font-size:1.1rem;direction:ltr}
 .badge-row{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1rem}
 .badge-item{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 4px 15px rgba(0,0,0,.1);transition:transform .3s}
 .badge-item:hover{transform:scale(1.15)}
@@ -195,7 +195,7 @@ footer .container{max-width:1200px;margin:0 auto}
   .floating-badge{display:none}
   .audience .container{gap:2rem}
   .audience.reverse .container{direction:rtl}
-  .section-sub{margin-right:auto;margin-left:auto}
+  .section-sub{margin-inline-start:auto;margin-inline-end:auto}
   .teacher-grid{grid-template-columns:repeat(3,1fr)}
   .stats-grid{grid-template-columns:repeat(2,1fr)}
   .footer-top{flex-direction:column;text-align:center}
@@ -238,23 +238,23 @@ footer .container{max-width:1200px;margin:0 auto}
 <section class="hero">
   <div class="container">
     <div class="hero-text">
-      <div class="section-badge" style="background:rgba(79,70,229,.1);color:var(--primary)">🚀 הדור הבא של תקשורת בית-ספרית</div>
+      <div class="section-badge" style="background:rgba(79,70,229,.1);color:var(--primary)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/></svg> הדור הבא של תקשורת בית-ספרית</div>
       <h1>בית הספר שלכם,<br><span>חכם יותר.</span></h1>
       <p>תקשורת מורים-הורים-תלמידים במקום אחד. עם גיימיפיקציה שהופכת את הלמידה לחוויה.</p>
       <div class="hero-buttons">
-        <a href="#waitlist" class="btn btn-primary">הצטרפו לרשימת ההמתנה ←</a>
+        <a href="#waitlist" class="btn btn-primary">הצטרפו לרשימת ההמתנה →</a>
         <a href="#features" class="btn btn-outline">גלו עוד</a>
       </div>
     </div>
     <div class="hero-visual">
       <div class="floating-badge b1">
-        <span style="color:var(--green)">✓</span> נוכחות עודכנה
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> נוכחות עודכנה
       </div>
       <div class="floating-badge b2">
-        <span style="font-size:1.2rem">🏆</span> <span class="en">+50 XP</span>
+        <span style="font-size:1.2rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M6.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0 1 16.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a6.023 6.023 0 0 1-2.77.896m5.25-8.388v-.028"/></svg></span> <span class="en">+50 XP</span>
       </div>
       <div class="floating-badge b3">
-        <span style="font-size:1.2rem">🔥</span> סטריק 7 ימים!
+        <span style="font-size:1.2rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg></span> סטריק 7 ימים!
       </div>
       <div class="hero-mockup">
         <div class="phone-frame">
@@ -262,7 +262,7 @@ footer .container{max-width:1200px;margin:0 auto}
             <div class="phone-notch"></div>
             <div class="screen-content">
               <div class="screen-header">
-                <h3>🎓 LerBox</h3>
+                <h3><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"/></svg> LerBox</h3>
                 <p>כיתה ו׳2 — בוקר טוב!</p>
               </div>
               <div class="screen-card">
@@ -271,7 +271,7 @@ footer .container{max-width:1200px;margin:0 auto}
                   <strong>נועה כהן</strong>
                   <span>נוכחת • שיעור ראשון</span>
                 </div>
-                <span class="screen-badge" style="background:rgba(16,185,129,.1);color:var(--green)">✓ נוכח</span>
+                <span class="screen-badge" style="background:rgba(16,185,129,.1);color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> נוכח</span>
               </div>
               <div class="screen-card">
                 <div class="screen-avatar" style="background:var(--gold)">ד</div>
@@ -279,15 +279,15 @@ footer .container{max-width:1200px;margin:0 auto}
                   <strong>דני לוי</strong>
                   <span>איחור • 08:15</span>
                 </div>
-                <span class="screen-badge" style="background:rgba(245,158,11,.1);color:var(--gold)">⏰ איחור</span>
+                <span class="screen-badge" style="background:rgba(245,158,11,.1);color:var(--gold)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg> איחור</span>
               </div>
               <div class="screen-card">
                 <div class="screen-avatar" style="background:var(--primary)">מ</div>
                 <div class="screen-card-text">
                   <strong>מיכל אברהם</strong>
-                  <span>🏆 +25 נקודות היום</span>
+                  <span><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M6.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0 1 16.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a6.023 6.023 0 0 1-2.77.896m5.25-8.388v-.028"/></svg> +25 נקודות היום</span>
                 </div>
-                <span class="screen-badge" style="background:rgba(79,70,229,.1);color:var(--primary)">⭐ מצטיינת</span>
+                <span class="screen-badge" style="background:rgba(79,70,229,.1);color:var(--primary)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg> מצטיינת</span>
               </div>
             </div>
           </div>
@@ -300,22 +300,22 @@ footer .container{max-width:1200px;margin:0 auto}
 <!-- PROBLEM -->
 <section class="problem">
   <div class="container">
-    <div class="section-badge" style="background:rgba(255,255,255,.1);color:#fff">😤 מכירים את זה?</div>
+    <div class="section-badge" style="background:rgba(255,255,255,.1);color:#fff"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.182 16.318A4.486 4.486 0 0 0 12.016 15a4.486 4.486 0 0 0-3.198 1.318M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM9.75 9.75c0 .414-.168.75-.375.75S9 10.164 9 9.75 9.168 9 9.375 9s.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Zm5.625 0c0 .414-.168.75-.375.75s-.375-.336-.375-.75.168-.75.375-.75.375.336.375.75Zm-.375 0h.008v.015h-.008V9.75Z"/></svg> מכירים את זה?</div>
     <h2 class="section-title">השיטות הישנות כבר לא עובדות</h2>
     <p class="section-sub">בתי ספר בישראל עדיין תקועים בכלים מיושנים. הגיע הזמן לשינוי.</p>
     <div class="problem-cards">
       <div class="problem-card reveal">
-        <div class="icon">📱</div>
+        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 0 0 6 3.75v16.5a2.25 2.25 0 0 0 2.25 2.25h7.5A2.25 2.25 0 0 0 18 20.25V3.75a2.25 2.25 0 0 0-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3"/></svg></div>
         <h3>קבוצות WhatsApp כאוטיות</h3>
         <p>מאות הודעות ביום, מידע חשוב נבלע, הורים מתוסכלים. אין סדר, אין פוקוס.</p>
       </div>
       <div class="problem-card reveal reveal-delay-1">
-        <div class="icon">📋</div>
+        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"/></svg></div>
         <h3>מש"ב מיושן</h3>
         <p>מערכת ניהול בית-ספרית מ-2005. איטית, מסורבלת, ולא מותאמת לעידן הנייד.</p>
       </div>
       <div class="problem-card reveal reveal-delay-2">
-        <div class="icon">😴</div>
+        <div class="icon"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z"/></svg></div>
         <h3>תלמידים לא מעורבים</h3>
         <p>ילדים גדלים על TikTok ו-Roblox, אבל בבית ספר — אפס גיימיפיקציה, אפס מוטיבציה.</p>
       </div>
@@ -326,7 +326,7 @@ footer .container{max-width:1200px;margin:0 auto}
 <!-- FEATURES -->
 <section class="features" id="features">
   <div class="container">
-    <div class="section-badge" style="background:rgba(79,70,229,.08);color:var(--primary)">✨ הכל בתוך אפליקציה אחת</div>
+    <div class="section-badge" style="background:rgba(79,70,229,.08);color:var(--primary)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904 9 18.75l-.813-2.846a4.5 4.5 0 0 0-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 0 0 3.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 0 0 3.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 0 0-3.09 3.09ZM18.259 8.715 18 9.75l-.259-1.035a3.375 3.375 0 0 0-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 0 0 2.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 0 0 2.455 2.456L21.75 6l-1.036.259a3.375 3.375 0 0 0-2.455 2.456ZM16.894 20.567 16.5 21.75l-.394-1.183a2.25 2.25 0 0 0-1.423-1.423L13.5 18.75l1.183-.394a2.25 2.25 0 0 0 1.423-1.423l.394-1.183.394 1.183a2.25 2.25 0 0 0 1.423 1.423l1.183.394-1.183.394a2.25 2.25 0 0 0-1.423 1.423Z"/></svg> הכל בתוך אפליקציה אחת</div>
     <h2 class="section-title">תכונות שישנו את בית הספר</h2>
     <p class="section-sub">כל מה שצריך למורים, הורים ותלמידים — במקום אחד, בעיצוב שמחייך.</p>
     <div class="feature-grid">
@@ -380,21 +380,21 @@ footer .container{max-width:1200px;margin:0 auto}
 <section class="gamification" id="gamification">
   <div class="container">
     <div>
-      <div class="section-badge" style="background:rgba(245,158,11,.1);color:var(--gold)">🏆 גיימיפיקציה שעובדת</div>
+      <div class="section-badge" style="background:rgba(245,158,11,.1);color:var(--gold)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M6.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0 1 16.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a6.023 6.023 0 0 1-2.77.896m5.25-8.388v-.028"/></svg> גיימיפיקציה שעובדת</div>
       <h2 class="section-title">הפכו למידה<br>למשחק מנצח</h2>
       <p class="section-sub">מערכת נקודות, תגים ולידרבורד שגורמת לתלמידים לרצות להשתתף, להצטיין ולהתחרות — בכיף.</p>
       <div class="badge-row" style="margin-top:2rem">
-        <div class="badge-item" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A)">🌟</div>
-        <div class="badge-item" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE)">📚</div>
-        <div class="badge-item" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0)">🎯</div>
-        <div class="badge-item" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">🧠</div>
-        <div class="badge-item" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8)">❤️</div>
-        <div class="badge-item" style="background:linear-gradient(135deg,#FEE2E2,#FECACA)">🔥</div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#FEF3C7,#FDE68A)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#DBEAFE,#BFDBFE)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#D1FAE5,#A7F3D0)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9.75v6.75m0 0-3-3m3 3 3-3m-8.25 6a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z"/></svg></div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#EDE9FE,#DDD6FE)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/></svg></div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#FCE7F3,#FBCFE8)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg></div>
+        <div class="badge-item" style="background:linear-gradient(135deg,#FEE2E2,#FECACA)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg></div>
       </div>
     </div>
     <div class="game-visual reveal">
       <div class="streak-bar">
-        <span class="fire">🔥</span>
+        <span class="fire"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg></span>
         <div>
           <strong style="font-size:.85rem">סטריק נוכחות</strong>
           <div style="font-size:.75rem;color:var(--text-light)">15 ימים רצוף!</div>
@@ -405,7 +405,7 @@ footer .container{max-width:1200px;margin:0 auto}
         <div class="game-rank" style="background:linear-gradient(135deg,#F59E0B,#D97706)">1</div>
         <div class="game-card-info">
           <h4>נועה כהן</h4>
-          <p>כיתה ו׳2 • 🔥 סטריק 21 ימים</p>
+          <p>כיתה ו׳2 • <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg> סטריק 21 ימים</p>
         </div>
         <span class="game-points en">2,450</span>
       </div>
@@ -413,7 +413,7 @@ footer .container{max-width:1200px;margin:0 auto}
         <div class="game-rank" style="background:linear-gradient(135deg,#9CA3AF,#6B7280)">2</div>
         <div class="game-card-info">
           <h4>דני לוי</h4>
-          <p>כיתה ו׳2 • ⭐ 12 תגים</p>
+          <p>כיתה ו׳2 • <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg> 12 תגים</p>
         </div>
         <span class="game-points en">2,180</span>
       </div>
@@ -421,7 +421,7 @@ footer .container{max-width:1200px;margin:0 auto}
         <div class="game-rank" style="background:linear-gradient(135deg,#D97706,#92400E)">3</div>
         <div class="game-card-info">
           <h4>מיכל אברהם</h4>
-          <p>כיתה ו׳2 • 📚 3 מטלות השבוע</p>
+          <p>כיתה ו׳2 • <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg> 3 מטלות השבוע</p>
         </div>
         <span class="game-points en">1,920</span>
       </div>
@@ -433,7 +433,7 @@ footer .container{max-width:1200px;margin:0 auto}
 <section class="audience" id="teachers">
   <div class="container">
     <div>
-      <div class="audience-tag" style="background:rgba(79,70,229,.08);color:var(--primary)">👩‍🏫 למורים</div>
+      <div class="audience-tag" style="background:rgba(79,70,229,.08);color:var(--primary)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M4.26 10.147a60.438 60.438 0 0 0-.491 6.347A48.62 48.62 0 0 1 12 20.904a48.62 48.62 0 0 1 8.232-4.41 60.46 60.46 0 0 0-.491-6.347m-15.482 0a50.636 50.636 0 0 0-2.658-.813A59.906 59.906 0 0 1 12 3.493a59.903 59.903 0 0 1 10.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.717 50.717 0 0 1 12 13.489a50.702 50.702 0 0 1 7.74-3.342M6.75 15a.75.75 0 1 0 0-1.5.75.75 0 0 0 0 1.5Zm0 0v-3.675A55.378 55.378 0 0 1 12 8.443m-7.007 11.55A5.981 5.981 0 0 0 6.75 15.75v-1.5"/></svg> למורים</div>
       <h2 class="section-title">ניהול כיתה<br>בלי כאב ראש</h2>
       <p class="section-sub" style="margin-bottom:1.5rem">נוכחות, התנהגות ותקשורת עם הורים — הכל מהנייד, בשלוש שניות.</p>
       <ul class="audience-list">
@@ -445,14 +445,14 @@ footer .container{max-width:1200px;margin:0 auto}
     </div>
     <div class="audience-visual reveal">
       <div class="audience-mockup">
-        <h4 style="margin-bottom:1rem;font-size:1rem">📋 נוכחות — כיתה ו׳2 — יום ראשון</h4>
+        <h4 style="margin-bottom:1rem;font-size:1rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h3.75M9 15h3.75M9 18h3.75m3 .75H18a2.25 2.25 0 0 0 2.25-2.25V6.108c0-1.135-.845-2.098-1.976-2.192a48.424 48.424 0 0 0-1.123-.08m-5.801 0c-.065.21-.1.433-.1.664 0 .414.336.75.75.75h4.5a.75.75 0 0 0 .75-.75 2.25 2.25 0 0 0-.1-.664m-5.8 0A2.251 2.251 0 0 1 13.5 2.25H15a2.25 2.25 0 0 1 2.15 1.586m-5.8 0c-.376.023-.75.05-1.124.08C9.095 4.01 8.25 4.973 8.25 6.108V8.25m0 0H4.875c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125h9.75c.621 0 1.125-.504 1.125-1.125V9.375c0-.621-.504-1.125-1.125-1.125H8.25ZM6.75 12h.008v.008H6.75V12Zm0 3h.008v.008H6.75V15Zm0 3h.008v.008H6.75V18Z"/></svg> נוכחות — כיתה ו׳2 — יום ראשון</h4>
         <div class="teacher-grid">
-          <div class="teacher-cell"><div class="name">נועה כ.</div><div class="status s-present">נוכחת ✓</div></div>
-          <div class="teacher-cell"><div class="name">דני ל.</div><div class="status s-late">איחור ⏰</div></div>
-          <div class="teacher-cell"><div class="name">מיכל א.</div><div class="status s-present">נוכחת ✓</div></div>
-          <div class="teacher-cell"><div class="name">יוסי מ.</div><div class="status s-absent">נעדר ✗</div></div>
-          <div class="teacher-cell"><div class="name">שירה ב.</div><div class="status s-present">נוכחת ✓</div></div>
-          <div class="teacher-cell"><div class="name">עומר ד.</div><div class="status s-present">נוכח ✓</div></div>
+          <div class="teacher-cell"><div class="name">נועה כ.</div><div class="status s-present">נוכחת <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div></div>
+          <div class="teacher-cell"><div class="name">דני ל.</div><div class="status s-late">איחור <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div></div>
+          <div class="teacher-cell"><div class="name">מיכל א.</div><div class="status s-present">נוכחת <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div></div>
+          <div class="teacher-cell"><div class="name">יוסי מ.</div><div class="status s-absent">נעדר</div></div>
+          <div class="teacher-cell"><div class="name">שירה ב.</div><div class="status s-present">נוכחת <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div></div>
+          <div class="teacher-cell"><div class="name">עומר ד.</div><div class="status s-present">נוכח <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></div></div>
         </div>
       </div>
     </div>
@@ -464,29 +464,29 @@ footer .container{max-width:1200px;margin:0 auto}
   <div class="container">
     <div class="audience-visual reveal">
       <div class="audience-mockup">
-        <h4 style="margin-bottom:1rem;font-size:1rem">👨‍👩‍👧 לוח הורים — לירוי צדקה</h4>
+        <h4 style="margin-bottom:1rem;font-size:1rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg> לוח הורים — לירוי צדקה</h4>
         <div style="display:flex;flex-direction:column;gap:.8rem">
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(16,185,129,.06);border-radius:10px;border-right:3px solid var(--green)">
-            <div><strong style="font-size:.9rem">נוכחות היום</strong><br><span style="font-size:.8rem;color:var(--text-light)">הגיע בזמן ✓</span></div>
-            <span style="font-size:1.5rem">✅</span>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(16,185,129,.06);border-radius:10px;border-inline-start:3px solid var(--green)">
+            <div><strong style="font-size:.9rem">נוכחות היום</strong><br><span style="font-size:.8rem;color:var(--text-light)">הגיע בזמן <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span></div>
+            <span style="font-size:1.5rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg></span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(79,70,229,.06);border-radius:10px;border-right:3px solid var(--primary)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(79,70,229,.06);border-radius:10px;border-inline-start:3px solid var(--primary)">
             <div><strong style="font-size:.9rem">הודעה מהמחנכת</strong><br><span style="font-size:.8rem;color:var(--text-light)">לירוי השתתף יפה מאוד!</span></div>
-            <span style="font-size:1.5rem">💬</span>
+            <span style="font-size:1.5rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 0 1-.825-.242m9.345-8.334a2.126 2.126 0 0 0-.476-.095 48.64 48.64 0 0 0-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0 0 11.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155"/></svg></span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(245,158,11,.06);border-radius:10px;border-right:3px solid var(--gold)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(245,158,11,.06);border-radius:10px;border-inline-start:3px solid var(--gold)">
             <div><strong style="font-size:.9rem">שיעורי בית</strong><br><span style="font-size:.8rem;color:var(--text-light)">מתמטיקה — עמ׳ 45, תרגילים 1-5</span></div>
-            <span style="font-size:1.5rem">📝</span>
+            <span style="font-size:1.5rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="m16.862 4.487 1.687-1.688a1.875 1.875 0 1 1 2.652 2.652L10.582 16.07a4.5 4.5 0 0 1-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 0 1 1.13-1.897l8.932-8.931Zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0 1 15.75 21H5.25A2.25 2.25 0 0 1 3 18.75V8.25A2.25 2.25 0 0 1 5.25 6H10"/></svg></span>
           </div>
-          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(124,58,237,.06);border-radius:10px;border-right:3px solid var(--purple)">
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:.8rem 1rem;background:rgba(124,58,237,.06);border-radius:10px;border-inline-start:3px solid var(--purple)">
             <div><strong style="font-size:.9rem">נקודות השבוע</strong><br><span style="font-size:.8rem;color:var(--text-light)">צבר 120 נקודות — מקום 3 בכיתה!</span></div>
-            <span style="font-size:1.5rem">🏆</span>
+            <span style="font-size:1.5rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 0 1 3 3h-15a3 3 0 0 1 3-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M6.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 0 1-.982-3.172M9.497 14.25a7.454 7.454 0 0 0 .981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 0 0 7.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M18.75 4.236c.982.143 1.954.317 2.916.52A6.003 6.003 0 0 1 16.27 9.728M18.75 4.236V4.5c0 2.108-.966 3.99-2.48 5.228m0 0a6.023 6.023 0 0 1-2.77.896m5.25-8.388v-.028"/></svg></span>
           </div>
         </div>
       </div>
     </div>
     <div>
-      <div class="audience-tag" style="background:rgba(16,185,129,.08);color:var(--green)">👨‍👩‍👧 להורים</div>
+      <div class="audience-tag" style="background:rgba(16,185,129,.08);color:var(--green)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/></svg> להורים</div>
       <h2 class="section-title">תמיד בתמונה,<br>בלי 200 הודעות</h2>
       <p class="section-sub" style="margin-bottom:1.5rem">לוח אישי לכל ילד עם כל המידע שחשוב — נוכחות, ציונים, הודעות ומטלות.</p>
       <ul class="audience-list">
@@ -503,7 +503,7 @@ footer .container{max-width:1200px;margin:0 auto}
 <section class="audience" id="students">
   <div class="container">
     <div>
-      <div class="audience-tag" style="background:rgba(124,58,237,.08);color:var(--purple)">🎮 לתלמידים</div>
+      <div class="audience-tag" style="background:rgba(124,58,237,.08);color:var(--purple)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z"/></svg> לתלמידים</div>
       <h2 class="section-title">בית ספר שכיף<br>להיות בו</h2>
       <p class="section-sub" style="margin-bottom:1.5rem">דשבורד אישי, תחרויות, הישגים ופרסים. הלמידה הפכה למשחק.</p>
       <ul class="audience-list">
@@ -515,7 +515,7 @@ footer .container{max-width:1200px;margin:0 auto}
     </div>
     <div class="audience-visual reveal">
       <div class="audience-mockup" style="text-align:center;background:linear-gradient(160deg,#EEF2FF,#F5F3FF);border:none">
-        <div style="font-size:4rem;margin-bottom:.5rem">🎮</div>
+        <div style="margin-bottom:.5rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="48" height="48" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M14.25 6.087c0-.355.186-.676.401-.959.221-.29.349-.634.349-1.003 0-1.036-1.007-1.875-2.25-1.875s-2.25.84-2.25 1.875c0 .369.128.713.349 1.003.215.283.401.604.401.959v0a.64.64 0 0 1-.657.643 48.39 48.39 0 0 1-4.163-.3c.186 1.613.293 3.25.315 4.907a.656.656 0 0 1-.658.663v0c-.355 0-.676-.186-.959-.401a1.647 1.647 0 0 0-1.003-.349c-1.036 0-1.875 1.007-1.875 2.25s.84 2.25 1.875 2.25c.369 0 .713-.128 1.003-.349.283-.215.604-.401.959-.401v0c.31 0 .555.26.532.57a48.039 48.039 0 0 1-.642 5.056c1.518.19 3.058.309 4.616.354a.64.64 0 0 0 .657-.643v0c0-.355-.186-.676-.401-.959a1.647 1.647 0 0 1-.349-1.003c0-1.035 1.008-1.875 2.25-1.875 1.243 0 2.25.84 2.25 1.875 0 .369-.128.713-.349 1.003-.215.283-.4.604-.4.959v0c0 .333.277.599.61.58a48.1 48.1 0 0 0 5.427-.63 48.05 48.05 0 0 0 .582-4.717.532.532 0 0 0-.533-.57v0c-.355 0-.676.186-.959.401-.29.221-.634.349-1.003.349-1.035 0-1.875-1.007-1.875-2.25s.84-2.25 1.875-2.25c.37 0 .713.128 1.003.349.283.215.604.401.959.401v0a.656.656 0 0 0 .658-.663 48.422 48.422 0 0 0-.37-5.36c-1.886.342-3.81.574-5.766.689a.578.578 0 0 1-.61-.58v0Z"/></svg></div>
         <h3 style="font-size:1.5rem;margin-bottom:.5rem">ברוך הבא, לירוי!</h3>
         <p style="color:var(--text-light);margin-bottom:1.5rem">מקום 3 בכיתה • רמה 12</p>
         <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1.5rem">
@@ -531,15 +531,15 @@ footer .container{max-width:1200px;margin:0 auto}
           <div style="width:1px;background:#E5E7EB"></div>
           <div style="text-align:center">
             <div style="font-size:2rem;font-weight:900;color:var(--green)" class="en">21</div>
-            <div style="font-size:.8rem;color:var(--text-light)">סטריק 🔥</div>
+            <div style="font-size:.8rem;color:var(--text-light)">סטריק <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.362 5.214A8.252 8.252 0 0 1 12 21 8.25 8.25 0 0 1 6.038 7.047 8.287 8.287 0 0 0 9 9.601a8.983 8.983 0 0 1 3.361-6.867 8.21 8.21 0 0 0 3 2.48Z"/></svg></div>
           </div>
         </div>
         <div style="display:flex;justify-content:center;gap:.5rem">
-          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#FEF3C7,#FDE68A)">🌟</div>
-          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#DBEAFE,#BFDBFE)">📚</div>
-          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#D1FAE5,#A7F3D0)">🎯</div>
-          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#EDE9FE,#DDD6FE)">🧠</div>
-          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#FCE7F3,#FBCFE8)">❤️</div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#FEF3C7,#FDE68A)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 0 1 1.04 0l2.125 5.111a.563.563 0 0 0 .475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 0 0-.182.557l1.285 5.385a.562.562 0 0 1-.84.61l-4.725-2.885a.562.562 0 0 0-.586 0L6.982 20.54a.562.562 0 0 1-.84-.61l1.285-5.386a.562.562 0 0 0-.182-.557l-4.204-3.602a.562.562 0 0 1 .321-.988l5.518-.442a.563.563 0 0 0 .475-.345L11.48 3.5Z"/></svg></div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#DBEAFE,#BFDBFE)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/></svg></div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#D1FAE5,#A7F3D0)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M12 9.75v6.75m0 0-3-3m3 3 3-3m-8.25 6a4.5 4.5 0 0 1-1.41-8.775 5.25 5.25 0 0 1 10.233-2.33 3 3 0 0 1 3.758 3.848A3.752 3.752 0 0 1 18 19.5H6.75Z"/></svg></div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#EDE9FE,#DDD6FE)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 0 1-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 0 1 4.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0 1 12 15a9.065 9.065 0 0 0-6.23.693L5 14.5m14.8.8 1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0 1 12 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/></svg></div>
+          <div class="badge-item" style="width:40px;height:40px;font-size:1.1rem;background:linear-gradient(135deg,#FCE7F3,#FBCFE8)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z"/></svg></div>
         </div>
       </div>
     </div>
@@ -566,7 +566,7 @@ footer .container{max-width:1200px;margin:0 auto}
       </div>
       <div class="stat-item reveal reveal-delay-3">
         <h2 class="en" style="color:var(--gold)">0</h2>
-        <p>מערכות מגניבות — עד עכשיו 😉</p>
+        <p>מערכות מגניבות — עד עכשיו </p>
       </div>
     </div>
   </div>
@@ -575,7 +575,7 @@ footer .container{max-width:1200px;margin:0 auto}
 <!-- CTA -->
 <section class="cta-section" id="waitlist">
   <div class="container">
-    <div class="section-badge" style="background:rgba(79,70,229,.08);color:var(--primary)">🚀 השקה בקרוב</div>
+    <div class="section-badge" style="background:rgba(79,70,229,.08);color:var(--primary)"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/></svg> השקה בקרוב</div>
     <h2 class="section-title">הצטרפו לרשימת ההמתנה</h2>
     <p class="section-sub">היו מבין הראשונים לחוות את LerBox. השאירו פרטים ונחזור אליכם.</p>
     <form class="cta-form" onsubmit="handleSubmit(event)">
@@ -589,9 +589,9 @@ footer .container{max-width:1200px;margin:0 auto}
         <option value="parent">הורה</option>
         <option value="other">אחר</option>
       </select>
-      <button type="submit" class="btn btn-primary">הצטרפו לרשימת ההמתנה 🚀</button>
+      <button type="submit" class="btn btn-primary">הצטרפו לרשימת ההמתנה <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a6 6 0 0 1-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 0 0 6.16-12.12A14.98 14.98 0 0 0 9.631 8.41m5.96 5.96a14.926 14.926 0 0 1-5.841 2.58m-.119-8.54a6 6 0 0 0-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 0 0-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 0 1-2.448-2.448 14.9 14.9 0 0 1 .06-.312m-2.24 2.39a4.493 4.493 0 0 0-1.757 4.306 4.493 4.493 0 0 0 4.306-1.758M16.5 9a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0Z"/></svg></button>
     </form>
-    <p id="formSuccess" style="display:none;margin-top:1rem;color:var(--green);font-weight:600;font-size:1.1rem">🎉 נרשמתם בהצלחה! נחזור אליכם בקרוב.</p>
+    <p id="formSuccess" style="display:none;margin-top:1rem;color:var(--green);font-weight:600;font-size:1.1rem"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="20" height="20" style="display:inline-block;vertical-align:middle;"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z"/></svg> נרשמתם בהצלחה! נחזור אליכם בקרוב.</p>
   </div>
 </section>
 
