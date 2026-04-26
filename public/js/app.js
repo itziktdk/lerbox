@@ -2,16 +2,7 @@
 const API = '';
 let state = { token: null, user: null, currentPage: 'home' };
 
-// ===== ICON HELPER =====
-const _icons = {
-  home: '🏠', check: '✅', users: '👥', clock: '⏰', xCircle: '❌',
-  bolt: '⚡', star: '⭐', book: '📚', megaphone: '📢', user: '👤',
-  chat: '💬', trophy: '🏆', pencil: '✏️', plus: '➕', save: '💾',
-  sparkles: '🌟', chartBar: '📊', clipboard: '📋', cog: '⚙️',
-  building: '🏫', briefcase: '👨‍🏫', academicCap: '🎓', wrench: '🔧',
-  checkBadge: '🏅', familyParent: '👨‍👩‍👧',
-};
-function icon(name) { return _icons[name] || '•'; }
+// Icons loaded from /js/icons.js (LBIcons + icon() function)
 
 // ===== HELPERS =====
 async function api(path, opts = {}) {
