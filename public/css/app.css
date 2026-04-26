@@ -1632,3 +1632,15 @@ textarea.form-input {
 .tab-btn.active {
   animation: scaleIn 0.2s ease;
 }
+
+/* ===== SVG Icon Styling ===== */
+.lb-icon { display: inline-block; vertical-align: middle; flex-shrink: 0; }
+.nav-icon .lb-icon, .nav-icon svg { width: 22px; height: 22px; }
+.stat-icon svg, .streak-icon svg { width: 28px; height: 28px; }
+.icon svg { width: 32px; height: 32px; }
+.role-icon svg { width: 32px; height: 32px; }
+.bh-icon svg { width: 28px; height: 28px; }
+.badge-item svg { width: 20px; height: 20px; }
+.landing-logo-box svg { width: 24px; height: 24px; }
+.logo-box svg { width: 20px; height: 20px; }
+.homework-icon svg { width: 24px; height: 24px; }
