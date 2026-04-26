@@ -3,12 +3,14 @@ try { require("dotenv").config(); } catch(e) {}
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const compression = require('compression');
 const path = require('path');
 
 const app = express();
+app.use(compression());
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1d', etag: true }));
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -39,7 +41,7 @@ async function connectDB() {
     return;
   }
   try {
-    await mongoose.connect(uri, { serverSelectionTimeoutMS: 15000 });
+    await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000, maxPoolSize: 5 });
     console.log('✅ MongoDB connected');
   } catch (err) {
     console.error('❌ MongoDB connection error:', err.message);
