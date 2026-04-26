@@ -6,128 +6,172 @@ const Announcement = require('../models/Announcement');
 const Homework = require('../models/Homework');
 const Behavior = require('../models/Behavior');
 const Achievement = require('../models/Achievement');
+const Attendance = require('../models/Attendance');
 
 router.post('/seed', async (req, res) => {
   try {
-    // Clear existing demo data
     await Promise.all([
       School.deleteMany({}), Class.deleteMany({}), User.deleteMany({}),
       Announcement.deleteMany({}), Homework.deleteMany({}),
-      Behavior.deleteMany({}), Achievement.deleteMany({})
+      Behavior.deleteMany({}), Achievement.deleteMany({}), Attendance.deleteMany({})
     ]);
 
-    // Create school
     const school = await School.create({
-      name: 'בית ספר השלום',
-      slug: 'hashalom',
-      address: 'רחוב הרצל 15, תל אביב',
-      principal: 'דנה כהן'
+      name: 'בית ספר הרצל', slug: 'herzl',
+      address: 'רחוב הרצל 42, תל אביב', principal: 'מיכל ברק'
     });
 
-    // Create teacher
     const teacher = await User.create({
-      schoolId: school._id, name: 'מיכל לוי', phone: '0501234567',
-      email: 'michal@lerbox.io', role: 'teacher', avatar: '👩‍🏫'
+      schoolId: school._id, name: 'רונית כהן', phone: '0501111111',
+      role: 'teacher', avatar: '👩‍🏫'
     });
 
-    // Create class
     const cls = await Class.create({
-      schoolId: school._id, name: 'ו\'2', grade: 'ו\'', year: 2026, teacherId: teacher._id
+      schoolId: school._id, name: 'כיתה ו\'1', grade: 'ו\'', year: 2026, teacherId: teacher._id
     });
     teacher.classId = cls._id;
     await teacher.save();
 
-    // Create students
-    const studentNames = [
-      { name: 'נועם אברהם', avatar: '🧑', points: 85, streaks: { attendance: 12, homework: 5, bestAttendance: 15 } },
-      { name: 'מאיה דוד', avatar: '👧', points: 120, streaks: { attendance: 20, homework: 8, bestAttendance: 20 } },
-      { name: 'איתן כהן', avatar: '👦', points: 65, streaks: { attendance: 3, homework: 2, bestAttendance: 7 } },
-      { name: 'שירה גולן', avatar: '👧🏻', points: 95, streaks: { attendance: 8, homework: 6, bestAttendance: 10 } },
-      { name: 'עומר פרץ', avatar: '🧒', points: 45, streaks: { attendance: 1, homework: 1, bestAttendance: 4 } },
-      { name: 'נויה שמיר', avatar: '👩🏻', points: 110, streaks: { attendance: 15, homework: 7, bestAttendance: 15 } },
-      { name: 'דניאל רוזן', avatar: '👨🏻', points: 72, streaks: { attendance: 5, homework: 3, bestAttendance: 9 } },
-      { name: 'תמר אלון', avatar: '👧🏽', points: 88, streaks: { attendance: 10, homework: 4, bestAttendance: 12 } },
-      { name: 'יובל ברק', avatar: '🧑🏻', points: 55, streaks: { attendance: 2, homework: 2, bestAttendance: 6 } },
-      { name: 'אלה מזרחי', avatar: '👩', points: 130, streaks: { attendance: 25, homework: 10, bestAttendance: 25 } }
+    const studentData = [
+      { name: 'דניאל לוי', avatar: '👦', points: 320, streaks: { attendance: 12, homework: 7, bestAttendance: 15 } },
+      { name: 'נועה גולן', avatar: '👧', points: 450, streaks: { attendance: 14, homework: 9, bestAttendance: 14 } },
+      { name: 'יובל מזרחי', avatar: '🧑', points: 180, streaks: { attendance: 5, homework: 3, bestAttendance: 8 } },
+      { name: 'שירה אביב', avatar: '👧🏻', points: 500, streaks: { attendance: 15, homework: 10, bestAttendance: 15 } },
+      { name: 'עומר דוד', avatar: '🧒', points: 95, streaks: { attendance: 2, homework: 1, bestAttendance: 4 } },
+      { name: 'מיה כהן', avatar: '👩🏻', points: 280, streaks: { attendance: 10, homework: 6, bestAttendance: 12 } },
+      { name: 'איתן פרץ', avatar: '👨🏻', points: 150, streaks: { attendance: 7, homework: 4, bestAttendance: 9 } },
+      { name: 'תמר רוזן', avatar: '👧🏽', points: 390, streaks: { attendance: 11, homework: 8, bestAttendance: 13 } },
+      { name: 'אורי שמיר', avatar: '🧑🏻', points: 50, streaks: { attendance: 0, homework: 0, bestAttendance: 3 } },
+      { name: 'הילה ברק', avatar: '👩', points: 420, streaks: { attendance: 13, homework: 9, bestAttendance: 13 } }
+    ];
+
+    const studentPhones = [
+      '0531111101','0531111102','0531111103','0531111104','0531111105',
+      '0531111106','0531111107','0531111108','0531111109','0531111110'
     ];
 
     const students = [];
-    for (const s of studentNames) {
+    for (let i = 0; i < studentData.length; i++) {
+      const s = studentData[i];
       const student = await User.create({
         schoolId: school._id, classId: cls._id, role: 'student',
-        phone: '05' + Math.floor(10000000 + Math.random() * 90000000),
-        ...s,
-        badges: s.points > 100 ? [{ name: 'מצטיין', icon: '⭐', earnedAt: new Date() }] : []
+        phone: studentPhones[i], ...s,
+        badges: s.points >= 300 ? [
+          { name: 'מצטיין', icon: '⭐', earnedAt: new Date() },
+          { name: 'אלוף', icon: '🏆', earnedAt: new Date() }
+        ] : s.points >= 100 ? [
+          { name: 'מצטיין', icon: '⭐', earnedAt: new Date() }
+        ] : []
       });
       students.push(student);
     }
 
-    // Create parent (linked to first student)
-    const parent = await User.create({
-      schoolId: school._id, name: 'רונית אברהם', phone: '0521234567',
-      role: 'parent', parentOf: [students[0]._id], classId: cls._id, avatar: '👩‍👦'
-    });
+    // Parents - one per student
+    const parents = [];
+    const parentNames = [
+      'יעל לוי','רחל גולן','אבי מזרחי','דינה אביב','משה דוד',
+      'ענת כהן','שרה פרץ','חנה רוזן','דוד שמיר','רינה ברק'
+    ];
+    for (let i = 0; i < 10; i++) {
+      const p = await User.create({
+        schoolId: school._id, name: parentNames[i],
+        phone: '050222220' + (i + 1).toString().padStart(1, '0'),
+        role: 'parent', parentOf: [students[i]._id], classId: cls._id, avatar: '👨‍👩‍👦'
+      });
+      parents.push(p);
+    }
+    // Fix phone for 0502222210
+    parents[9].phone = '0502222210';
+    await parents[9].save();
 
-    // Create admin
     const admin = await User.create({
-      schoolId: school._id, name: 'דנה כהן', phone: '0531234567',
+      schoolId: school._id, name: 'מיכל ברק', phone: '0509999999',
       role: 'admin', avatar: '👩‍💼'
     });
 
-    // Create announcements
+    // Attendance - last 5 days
+    for (let d = 0; d < 5; d++) {
+      const date = new Date();
+      date.setDate(date.getDate() - d - 1);
+      date.setHours(8, 0, 0, 0);
+      const statuses = ['present', 'present', 'present', 'present', 'late', 'present', 'present', 'absent', 'present', 'present'];
+      // Rotate pattern
+      await Attendance.create({
+        classId: cls._id, date, period: 1, teacherId: teacher._id,
+        records: students.map((s, i) => ({
+          studentId: s._id,
+          status: statuses[(i + d) % statuses.length]
+        }))
+      });
+    }
+
+    // Behavior records - last 5 days
+    const behaviorRecords = [
+      { studentId: students[0]._id, type: 'positive', note: 'עזרה לחבר במתמטיקה', points: 5 },
+      { studentId: students[1]._id, type: 'positive', note: 'הצגה מעולה בעברית', points: 5 },
+      { studentId: students[3]._id, type: 'positive', note: 'השתתפות פעילה בשיעור', points: 3 },
+      { studentId: students[4]._id, type: 'disruption', note: 'הפרעה בשיעור מדעים', points: -3 },
+      { studentId: students[8]._id, type: 'disruption', note: 'איחור חוזר', points: -2 },
+      { studentId: students[7]._id, type: 'positive', note: 'ציון מעולה במבחן', points: 5 },
+      { studentId: students[9]._id, type: 'positive', note: 'מנהיגות בפעילות חברתית', points: 5 },
+      { studentId: students[2]._id, type: 'positive', note: 'שיפור משמעותי בהתנהגות', points: 3 },
+    ];
+    for (const b of behaviorRecords) {
+      await Behavior.create({ ...b, classId: cls._id, teacherId: teacher._id });
+    }
+
+    // Homework - 3 active assignments
+    const homeworks = [
+      { title: 'תרגילים בשברים', description: 'עמוד 45, תרגילים 1-10', dueDate: new Date(Date.now() + 3*86400000) },
+      { title: 'חיבור בנושא "הגיבור שלי"', description: 'כתבו חיבור של לפחות עמוד אחד', dueDate: new Date(Date.now() + 5*86400000) },
+      { title: 'מפת ישראל - ערים ונהרות', description: 'סמנו 10 ערים ו-3 נהרות על המפה', dueDate: new Date(Date.now() + 2*86400000) },
+    ];
+    for (const hw of homeworks) {
+      await Homework.create({
+        classId: cls._id, teacherId: teacher._id, ...hw,
+        submissions: students.map((s, i) => ({
+          studentId: s._id,
+          status: i < 5 ? 'submitted' : 'pending',
+          submittedAt: i < 5 ? new Date() : undefined
+        }))
+      });
+    }
+
+    // Announcements
     await Announcement.create([
-      { schoolId: school._id, title: 'טיול שנתי 🏔️', body: 'הטיול השנתי יתקיים ביום שלישי הקרוב. נא לוודא אישורי הורים.', authorId: admin._id, authorRole: 'admin', audience: 'all' },
-      { schoolId: school._id, classId: cls._id, title: 'מבחן מתמטיקה', body: 'מבחן בשברים ביום חמישי. חומר ללמידה הועלה לתיקייה.', authorId: teacher._id, authorRole: 'teacher', audience: 'class' }
+      { schoolId: school._id, title: 'טיול שנתי לגליל 🏔️', body: 'הטיול השנתי יתקיים ביום שלישי 5.5. נא לוודא אישורי הורים עד יום ראשון.', authorId: admin._id, authorRole: 'admin', audience: 'all' },
+      { schoolId: school._id, title: 'יום ספורט 🏃', body: 'יום ספורט בית ספרי יתקיים ביום חמישי. יש להגיע עם ביגוד ספורטיבי.', authorId: admin._id, authorRole: 'admin', audience: 'all' },
+      { schoolId: school._id, classId: cls._id, title: 'מבחן מתמטיקה 📐', body: 'מבחן בשברים ואחוזים ביום רביעי. חומר ללמידה הועלה לתיקייה.', authorId: teacher._id, authorRole: 'teacher', audience: 'class' }
     ]);
 
-    // Create homework
-    const hw = await Homework.create({
-      classId: cls._id, title: 'תרגילים בשברים', description: 'עמוד 45, תרגילים 1-10',
-      dueDate: new Date(Date.now() + 3 * 24 * 60 * 60 * 1000), teacherId: teacher._id,
-      submissions: students.map(s => ({ studentId: s._id, status: Math.random() > 0.5 ? 'submitted' : 'pending', submittedAt: Math.random() > 0.5 ? new Date() : undefined }))
-    });
-
-    // Create some behavior records
-    await Behavior.create([
-      { studentId: students[1]._id, classId: cls._id, type: 'positive', note: 'עזרה לחבר בשיעור', teacherId: teacher._id, points: 5 },
-      { studentId: students[9]._id, classId: cls._id, type: 'positive', note: 'הצגה מעולה בפני הכיתה', teacherId: teacher._id, points: 5 },
-      { studentId: students[4]._id, classId: cls._id, type: 'disruption', note: 'הפרעה בשיעור', teacherId: teacher._id, points: -3 }
-    ]);
-
-    // Create achievements
-    await Achievement.create([
-      { studentId: students[9]._id, type: 'streak_attendance_20', name: '20 ימי נוכחות רצופים', icon: '🏆' },
-      { studentId: students[9]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
-      { studentId: students[9]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
-      { studentId: students[9]._id, type: 'points_100', name: '100 נקודות', icon: '💯' },
-      { studentId: students[9]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
-      { studentId: students[9]._id, type: 'streak_homework_7', name: '7 הגשות רצופות', icon: '📚' },
-      { studentId: students[9]._id, type: 'streak_homework_3', name: '3 הגשות רצופות', icon: '📝' },
-      { studentId: students[1]._id, type: 'streak_attendance_20', name: '20 ימי נוכחות רצופים', icon: '🏆' },
+    // Achievements
+    const achData = [
+      { studentId: students[3]._id, type: 'streak_attendance_15', name: '15 ימי נוכחות רצופים', icon: '🏆' },
+      { studentId: students[3]._id, type: 'points_500', name: '500 נקודות!', icon: '💎' },
       { studentId: students[1]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
-      { studentId: students[1]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
-      { studentId: students[1]._id, type: 'points_100', name: '100 נקודות', icon: '💯' },
-      { studentId: students[1]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
-      { studentId: students[5]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
-      { studentId: students[5]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
-      { studentId: students[5]._id, type: 'points_100', name: '100 נקודות', icon: '💯' },
-      { studentId: students[5]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
+      { studentId: students[1]._id, type: 'points_400', name: '400 נקודות', icon: '💯' },
+      { studentId: students[9]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
+      { studentId: students[9]._id, type: 'points_400', name: '400 נקודות', icon: '💯' },
       { studentId: students[0]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
-      { studentId: students[0]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
-      { studentId: students[0]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
-    ]);
+      { studentId: students[0]._id, type: 'points_300', name: '300 נקודות', icon: '💎' },
+      { studentId: students[7]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
+      { studentId: students[7]._id, type: 'points_300', name: '300 נקודות', icon: '💎' },
+      { studentId: students[5]._id, type: 'points_200', name: '200 נקודות', icon: '🌟' },
+    ];
+    await Achievement.create(achData);
 
     res.json({
       success: true,
-      message: 'Demo data created!',
+      message: 'Demo data seeded! בית ספר הרצל ready.',
       logins: {
-        teacher: { phone: teacher.phone, name: teacher.name },
-        student: { phone: students[0].phone, name: students[0].name },
-        parent: { phone: parent.phone, name: parent.name },
-        admin: { phone: admin.phone, name: admin.name }
+        teacher: { phone: '0501111111', name: 'רונית כהן' },
+        student: { phone: studentPhones[0], name: 'דניאל לוי' },
+        parent: { phone: '0502222201', name: 'יעל לוי' },
+        admin: { phone: '0509999999', name: 'מיכל ברק' }
       }
     });
   } catch (err) {
+    console.error('Seed error:', err);
     res.status(500).json({ error: err.message });
   }
 });
