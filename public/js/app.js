@@ -131,8 +131,10 @@ const navConfig = {
   ],
   admin: [
     { id: 'home', icon: '🏠', label: 'ראשי' },
+    { id: 'admin-classes', icon: '🏫', label: 'כיתות' },
+    { id: 'admin-users', icon: '👥', label: 'משתמשים' },
     { id: 'announcements', icon: '📢', label: 'הודעות' },
-    { id: 'reports', icon: '📊', label: 'דוחות' }
+    { id: 'admin-settings', icon: '⚙️', label: 'הגדרות' }
   ]
 };
 
@@ -157,7 +159,7 @@ function navigateTo(page) {
     teacher: { home: renderTeacherHome, attendance: renderAttendance, behavior: renderBehavior, homework: renderTeacherHomework, messages: renderTeacherMessages, announcements: renderAnnouncements },
     student: { home: renderStudentHome, homework: renderStudentHomework, achievements: renderAchievements, leaderboard: renderLeaderboard, announcements: renderAnnouncements },
     parent: { home: renderParentHome, messages: renderMessages, announcements: renderAnnouncements },
-    admin: { home: renderAdminHome, announcements: renderAnnouncements, reports: renderReports }
+    admin: { home: renderAdminHome, 'admin-classes': renderAdminClasses, 'admin-users': renderAdminUsers, announcements: renderAnnouncements, 'admin-settings': renderAdminSettings }
   };
 
   const render = renderers[state.user.role]?.[page];
@@ -996,61 +998,317 @@ async function renderMessages(el) {
 
 // ===== ADMIN VIEWS =====
 async function renderAdminHome(el) {
-  const classId = state.user.classId?._id || state.user.classId;
-  let students = [], stats = { present: 0, late: 0, absent: 0, rate: 0 };
-  try {
-    const classes = await api('/api/classes');
-    if (classes.length) {
-      students = await api(`/api/classes/${classes[0]._id}/students`);
-      stats = await api(`/api/attendance/stats/${classes[0]._id}`);
-    }
-  } catch(e) {}
+  let data = { school: {}, attendance: {}, behavior: {}, classStats: [], topStudents: [] };
+  try { data = await api('/api/admin/dashboard'); } catch(e) {}
+
+  const cs = data.classStats || [];
+  const classRows = cs.map(c => `
+    <div class="leaderboard-item" onclick="navigateTo('admin-classes')" style="cursor:pointer">
+      <span style="font-size:1.3rem">🏫</span>
+      <span class="leaderboard-name">${c.name} ${c.grade || ''}</span>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="badge badge-blue">${c.studentCount} תלמידים</span>
+        <span class="badge badge-green">${c.attendance.rate}% נוכחות</span>
+      </div>
+    </div>
+  `).join('');
+
+  const topRows = (data.topStudents || []).map((s, i) => `
+    <div class="leaderboard-item">
+      <div class="leaderboard-rank">${i + 1}</div>
+      <span style="font-size:1.3rem">${s.avatar || '👤'}</span>
+      <span class="leaderboard-name">${s.name}</span>
+      <span class="leaderboard-points">${s.points} נק׳</span>
+    </div>
+  `).join('');
 
   el.innerHTML = `
     <h2 class="text-2xl font-bold mb-4">👩‍💼 לוח מנהל/ת</h2>
     <div class="stats-row">
-      <div class="stat-card green">
-        <div class="stat-icon">📊</div>
-        <div class="stat-value">${stats.rate}%</div>
-        <div class="stat-label">אחוז נוכחות</div>
-      </div>
       <div class="stat-card blue">
-        <div class="stat-icon">👥</div>
-        <div class="stat-value">${students.length}</div>
+        <div class="stat-icon">🏫</div>
+        <div class="stat-value">${data.school.classCount || 0}</div>
+        <div class="stat-label">כיתות</div>
+      </div>
+      <div class="stat-card purple" style="background:linear-gradient(135deg,#8B5CF6,#7C3AED)">
+        <div class="stat-icon">👨‍🏫</div>
+        <div class="stat-value">${data.school.teacherCount || 0}</div>
+        <div class="stat-label">מורים</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">👦</div>
+        <div class="stat-value">${data.school.studentCount || 0}</div>
         <div class="stat-label">תלמידים</div>
       </div>
       <div class="stat-card gold">
-        <div class="stat-icon">⏰</div>
-        <div class="stat-value">${stats.late}</div>
-        <div class="stat-label">איחורים</div>
-      </div>
-      <div class="stat-card red">
-        <div class="stat-icon">❌</div>
-        <div class="stat-value">${stats.absent}</div>
-        <div class="stat-label">חיסורים</div>
+        <div class="stat-icon">👨‍👩‍👧</div>
+        <div class="stat-value">${data.school.parentCount || 0}</div>
+        <div class="stat-label">הורים</div>
       </div>
     </div>
+
+    <div class="stats-row">
+      <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value">${data.attendance.rate || 0}%</div>
+        <div class="stat-label">נוכחות היום</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value">${data.behavior.positive || 0}</div>
+        <div class="stat-label">דיווחים חיוביים</div>
+      </div>
+      <div class="stat-card red">
+        <div class="stat-icon">⚠️</div>
+        <div class="stat-value">${data.behavior.negative || 0}</div>
+        <div class="stat-label">דיווחים שליליים</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">🏫 מצב כיתות</span></div>
+      ${classRows || '<p class="text-center text-gray p-2">אין כיתות עדיין</p>'}
+    </div>
+
     <div class="card">
       <div class="card-header"><span class="card-title">🏆 מובילי הנקודות</span></div>
-      ${students.sort((a,b) => b.points - a.points).slice(0, 5).map((s, i) => `
-        <div class="leaderboard-item">
-          <div class="leaderboard-rank">${i+1}</div>
-          <span style="font-size:1.3rem">${s.avatar || '👤'}</span>
-          <span class="leaderboard-name">${s.name}</span>
-          <span class="leaderboard-points">${s.points} נק׳</span>
-        </div>
-      `).join('')}
+      ${topRows || '<p class="text-center text-gray p-2">אין נתונים</p>'}
     </div>
   `;
 }
 
-async function renderReports(el) {
+async function renderAdminClasses(el) {
+  let classes = [];
+  try { classes = await api('/api/admin/classes'); } catch(e) {}
+
+  let teachers = [];
+  try { teachers = await api('/api/admin/users?role=teacher'); } catch(e) {}
+
+  const classCards = classes.map(c => `
+    <div class="card" style="margin-bottom:12px">
+      <div class="card-header">
+        <span class="card-title">🏫 ${c.name} ${c.grade ? '(שכבה ' + c.grade + ')' : ''}</span>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+        <span class="badge badge-blue">👦 ${c.studentCount || 0} תלמידים</span>
+        <span class="badge badge-green">👨‍🏫 ${c.teacherId?.name || 'ללא מורה'}</span>
+      </div>
+      <div style="margin-top:8px;display:flex;gap:8px">
+        <button class="btn btn-outline btn-sm" onclick="editClassDialog('${c._id}', '${c.name}', '${c.grade || ''}', '${c.teacherId?._id || ''}')">✏️ עריכה</button>
+        <button class="btn btn-outline btn-sm" style="color:#EF4444" onclick="deleteClass('${c._id}')">🗑️ מחיקה</button>
+      </div>
+    </div>
+  `).join('');
+
+  const teacherOptions = teachers.map(t => `<option value="${t._id}">${t.name}</option>`).join('');
+
   el.innerHTML = `
-    <h2 class="text-2xl font-bold mb-4">📊 דוחות</h2>
+    <h2 class="text-2xl font-bold mb-4">🏫 ניהול כיתות</h2>
     <div class="card">
-      <p class="text-center text-gray p-4">📈 דוחות מפורטים — בקרוב!</p>
+      <div class="card-header"><span class="card-title">➕ כיתה חדשה</span></div>
+      <div class="form-group">
+        <label>שם הכיתה</label>
+        <input type="text" id="new-class-name" class="form-input" placeholder="למשל: א' 1">
+      </div>
+      <div class="form-group">
+        <label>שכבה</label>
+        <input type="text" id="new-class-grade" class="form-input" placeholder="למשל: א'">
+      </div>
+      <div class="form-group">
+        <label>מורה משויך</label>
+        <select id="new-class-teacher" class="form-input">
+          <option value="">ללא מורה</option>
+          ${teacherOptions}
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="createClass()">➕ יצירה</button>
+    </div>
+    ${classCards || '<p class="text-center text-gray p-4">אין כיתות עדיין</p>'}
+
+    <div id="edit-class-modal" class="modal hidden">
+      <div class="modal-content">
+        <h3>✏️ עריכת כיתה</h3>
+        <input type="hidden" id="edit-class-id">
+        <div class="form-group"><label>שם</label><input type="text" id="edit-class-name" class="form-input"></div>
+        <div class="form-group"><label>שכבה</label><input type="text" id="edit-class-grade" class="form-input"></div>
+        <div class="form-group"><label>מורה</label><select id="edit-class-teacher" class="form-input"><option value="">ללא</option>${teacherOptions}</select></div>
+        <div style="display:flex;gap:8px;margin-top:12px">
+          <button class="btn btn-primary" onclick="saveClassEdit()">שמור</button>
+          <button class="btn btn-outline" onclick="closeModal('edit-class-modal')">ביטול</button>
+        </div>
+      </div>
     </div>
   `;
+}
+
+async function createClass() {
+  const name = document.getElementById('new-class-name').value;
+  const grade = document.getElementById('new-class-grade').value;
+  const teacherId = document.getElementById('new-class-teacher').value;
+  if (!name) return toast('נא להזין שם כיתה', 'error');
+  try {
+    await api('/api/admin/classes', { method: 'POST', body: JSON.stringify({ name, grade, teacherId: teacherId || undefined }) });
+    toast('🏫 כיתה נוצרה!', 'success');
+    renderAdminClasses(document.getElementById('app-content'));
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+function editClassDialog(id, name, grade, teacherId) {
+  document.getElementById('edit-class-id').value = id;
+  document.getElementById('edit-class-name').value = name;
+  document.getElementById('edit-class-grade').value = grade;
+  document.getElementById('edit-class-teacher').value = teacherId;
+  document.getElementById('edit-class-modal').classList.remove('hidden');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.add('hidden');
+}
+
+async function saveClassEdit() {
+  const id = document.getElementById('edit-class-id').value;
+  const name = document.getElementById('edit-class-name').value;
+  const grade = document.getElementById('edit-class-grade').value;
+  const teacherId = document.getElementById('edit-class-teacher').value;
+  try {
+    await api(`/api/admin/classes/${id}`, { method: 'PUT', body: JSON.stringify({ name, grade, teacherId: teacherId || undefined }) });
+    toast('✅ כיתה עודכנה!', 'success');
+    closeModal('edit-class-modal');
+    renderAdminClasses(document.getElementById('app-content'));
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function deleteClass(id) {
+  if (!confirm('למחוק את הכיתה? פעולה זו לא ניתנת לביטול.')) return;
+  try {
+    await api(`/api/admin/classes/${id}`, { method: 'DELETE' });
+    toast('🗑️ כיתה נמחקה', 'success');
+    renderAdminClasses(document.getElementById('app-content'));
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function renderAdminUsers(el) {
+  let users = [], classes = [];
+  try { [users, classes] = await Promise.all([api('/api/admin/users'), api('/api/admin/classes')]); } catch(e) {}
+
+  const roleFilter = `
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-sm ${!state._adminRoleFilter ? 'btn-primary' : 'btn-outline'}" onclick="filterAdminUsers('')">הכל</button>
+      <button class="btn btn-sm ${state._adminRoleFilter === 'teacher' ? 'btn-primary' : 'btn-outline'}" onclick="filterAdminUsers('teacher')">👨‍🏫 מורים</button>
+      <button class="btn btn-sm ${state._adminRoleFilter === 'student' ? 'btn-primary' : 'btn-outline'}" onclick="filterAdminUsers('student')">👦 תלמידים</button>
+      <button class="btn btn-sm ${state._adminRoleFilter === 'parent' ? 'btn-primary' : 'btn-outline'}" onclick="filterAdminUsers('parent')">👨‍👩‍👧 הורים</button>
+    </div>
+  `;
+
+  const filtered = state._adminRoleFilter ? users.filter(u => u.role === state._adminRoleFilter) : users;
+  const roleNames = { teacher: 'מורה', student: 'תלמיד/ה', parent: 'הורה', admin: 'מנהל/ת' };
+  const roleIcons = { teacher: '👨‍🏫', student: '👦', parent: '👨‍👩‍👧', admin: '👩‍💼' };
+
+  const userRows = filtered.map(u => `
+    <div class="leaderboard-item">
+      <span style="font-size:1.3rem">${u.avatar || roleIcons[u.role] || '👤'}</span>
+      <div style="flex:1">
+        <span class="leaderboard-name">${u.name}</span>
+        <div style="font-size:0.8rem;color:#888">${roleNames[u.role]} ${u.classId?.name ? '• ' + u.classId.name : ''}</div>
+      </div>
+      <span style="font-size:0.8rem;color:#888">${u.phone || ''}</span>
+    </div>
+  `).join('');
+
+  const classOptions = classes.map(c => `<option value="${c._id}">${c.name}</option>`).join('');
+
+  el.innerHTML = `
+    <h2 class="text-2xl font-bold mb-4">👥 ניהול משתמשים</h2>
+    ${roleFilter}
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">➕ משתמש חדש</span></div>
+      <div class="form-group"><label>שם</label><input type="text" id="new-user-name" class="form-input" placeholder="שם מלא"></div>
+      <div class="form-group"><label>טלפון</label><input type="text" id="new-user-phone" class="form-input" placeholder="05XXXXXXXX"></div>
+      <div class="form-group"><label>תפקיד</label>
+        <select id="new-user-role" class="form-input">
+          <option value="student">תלמיד/ה</option>
+          <option value="teacher">מורה</option>
+          <option value="parent">הורה</option>
+        </select>
+      </div>
+      <div class="form-group"><label>כיתה</label>
+        <select id="new-user-class" class="form-input">
+          <option value="">ללא כיתה</option>
+          ${classOptions}
+        </select>
+      </div>
+      <button class="btn btn-primary btn-full" onclick="createUser()">➕ הוספה</button>
+    </div>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">📝 ${filtered.length} משתמשים</span></div>
+      ${userRows || '<p class="text-center text-gray p-2">אין משתמשים</p>'}
+    </div>
+  `;
+}
+
+function filterAdminUsers(role) {
+  state._adminRoleFilter = role;
+  renderAdminUsers(document.getElementById('app-content'));
+}
+
+async function createUser() {
+  const name = document.getElementById('new-user-name').value;
+  const phone = document.getElementById('new-user-phone').value;
+  const role = document.getElementById('new-user-role').value;
+  const classId = document.getElementById('new-user-class').value;
+  if (!name || !phone) return toast('נא למלא שם וטלפון', 'error');
+  try {
+    await api('/api/admin/users', { method: 'POST', body: JSON.stringify({ name, phone, role, classId: classId || undefined }) });
+    toast('✅ משתמש נוסף!', 'success');
+    renderAdminUsers(document.getElementById('app-content'));
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function renderAdminSettings(el) {
+  let school = {};
+  try { school = await api('/api/admin/school'); } catch(e) {}
+
+  el.innerHTML = `
+    <h2 class="text-2xl font-bold mb-4">⚙️ הגדרות בית הספר</h2>
+    <div class="card">
+      <div class="card-header"><span class="card-title">🏫 פרטי בית הספר</span></div>
+      <div class="form-group"><label>שם בית הספר</label><input type="text" id="school-name" class="form-input" value="${school.name || ''}"></div>
+      <div class="form-group"><label>כתובת</label><input type="text" id="school-address" class="form-input" value="${school.address || ''}"></div>
+      <div class="form-group"><label>מנהל/ת</label><input type="text" id="school-principal" class="form-input" value="${school.principal || ''}"></div>
+    </div>
+    <div class="card">
+      <div class="card-header"><span class="card-title">🎮 גיימיפיקציה</span></div>
+      <div class="form-group" style="display:flex;align-items:center;gap:12px">
+        <label style="flex:1">🏆 טבלת מובילים</label>
+        <label class="toggle">
+          <input type="checkbox" id="setting-leaderboard" ${school.settings?.leaderboardEnabled !== false ? 'checked' : ''}>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:12px">
+        <label style="flex:1">⭐ נקודות ותגים</label>
+        <label class="toggle">
+          <input type="checkbox" id="setting-gamification" ${school.settings?.gamificationEnabled !== false ? 'checked' : ''}>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="saveSchoolSettings()">💾 שמירת שינויים</button>
+  `;
+}
+
+async function saveSchoolSettings() {
+  const name = document.getElementById('school-name').value;
+  const address = document.getElementById('school-address').value;
+  const principal = document.getElementById('school-principal').value;
+  const leaderboardEnabled = document.getElementById('setting-leaderboard').checked;
+  const gamificationEnabled = document.getElementById('setting-gamification').checked;
+  try {
+    await api('/api/admin/school', { method: 'PUT', body: JSON.stringify({ name, address, principal, settings: { leaderboardEnabled, gamificationEnabled } }) });
+    toast('✅ הגדרות נשמרו!', 'success');
+  } catch (e) { toast(e.message, 'error'); }
 }
 
 // ===== SHARED VIEWS =====

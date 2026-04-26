@@ -21,4 +21,9 @@ router.get('/:id/students', auth, async (req, res) => {
   res.json(students);
 });
 
+router.get('/:id/parents', auth, async (req, res) => {
+  const parents = await User.find({ classId: req.params.id, role: 'parent' }).sort('name');
+  res.json(parents);
+});
+
 module.exports = router;

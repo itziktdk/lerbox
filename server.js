@@ -9,11 +9,6 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Connect MongoDB
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('✅ MongoDB connected'))
-  .catch(err => console.error('MongoDB error:', err));
-
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/schools', require('./routes/schools'));
@@ -26,11 +21,25 @@ app.use('/api/announcements', require('./routes/announcements'));
 app.use('/api/messages', require('./routes/messages'));
 app.use('/api/achievements', require('./routes/achievements'));
 app.use('/api/demo', require('./routes/demo'));
+app.use('/api/admin', require('./routes/admin'));
 
 // SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => console.log(`📦 LerBox running on port ${PORT}`));
+// Connect MongoDB and start server (only when run directly)
+async function startServer(mongoUri) {
+  const uri = mongoUri || process.env.MONGODB_URI;
+  await mongoose.connect(uri);
+  console.log('✅ MongoDB connected');
+  const PORT = process.env.PORT || 3000;
+  const server = app.listen(PORT, () => console.log(`📦 LerBox running on port ${PORT}`));
+  return server;
+}
+
+if (require.main === module) {
+  startServer().catch(err => console.error('Startup error:', err));
+}
+
+module.exports = { app, startServer };

@@ -42,6 +42,11 @@ router.post('/', auth, async (req, res) => {
         await User.findByIdAndUpdate(rec.studentId, {
           $inc: { 'streaks.attendance': 1, points: 2 }
         });
+      } else if (rec.status === 'late') {
+        // Late: keep streak but award 1 point instead of 2
+        await User.findByIdAndUpdate(rec.studentId, {
+          $inc: { points: 1 }
+        });
       } else if (rec.status === 'absent') {
         await User.findByIdAndUpdate(rec.studentId, {
           $set: { 'streaks.attendance': 0 }
