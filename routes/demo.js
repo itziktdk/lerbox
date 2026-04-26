@@ -96,11 +96,25 @@ router.post('/seed', async (req, res) => {
 
     // Create achievements
     await Achievement.create([
-      { studentId: students[9]._id, type: 'streak', name: 'שריפה! 🔥 25 ימי נוכחות', icon: '🔥' },
-      { studentId: students[1]._id, type: 'streak', name: 'כוכב 20 ימי נוכחות', icon: '⭐' },
-      { studentId: students[9]._id, type: 'points', name: 'מאה נקודות!', icon: '💯' },
-      { studentId: students[1]._id, type: 'points', name: 'מאה נקודות!', icon: '💯' },
-      { studentId: students[5]._id, type: 'points', name: 'מאה נקודות!', icon: '💯' }
+      { studentId: students[9]._id, type: 'streak_attendance_20', name: '20 ימי נוכחות רצופים', icon: '🏆' },
+      { studentId: students[9]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
+      { studentId: students[9]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
+      { studentId: students[9]._id, type: 'points_100', name: '100 נקודות', icon: '💯' },
+      { studentId: students[9]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
+      { studentId: students[9]._id, type: 'streak_homework_7', name: '7 הגשות רצופות', icon: '📚' },
+      { studentId: students[9]._id, type: 'streak_homework_3', name: '3 הגשות רצופות', icon: '📝' },
+      { studentId: students[1]._id, type: 'streak_attendance_20', name: '20 ימי נוכחות רצופים', icon: '🏆' },
+      { studentId: students[1]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
+      { studentId: students[1]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
+      { studentId: students[1]._id, type: 'points_100', name: '100 נקודות', icon: '💯' },
+      { studentId: students[1]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
+      { studentId: students[5]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
+      { studentId: students[5]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
+      { studentId: students[5]._id, type: 'points_100', name: '100 נקודות', icon: '💯' },
+      { studentId: students[5]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
+      { studentId: students[0]._id, type: 'streak_attendance_10', name: '10 ימי נוכחות רצופים', icon: '⭐' },
+      { studentId: students[0]._id, type: 'streak_attendance_5', name: '5 ימי נוכחות רצופים', icon: '🔥' },
+      { studentId: students[0]._id, type: 'points_50', name: '50 נקודות', icon: '💎' },
     ]);
 
     res.json({

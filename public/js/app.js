@@ -114,11 +114,13 @@ const navConfig = {
     { id: 'attendance', icon: '✅', label: 'נוכחות' },
     { id: 'behavior', icon: '⭐', label: 'התנהגות' },
     { id: 'homework', icon: '📚', label: 'שיעורי בית' },
+    { id: 'messages', icon: '💬', label: 'צ\'אט' },
     { id: 'announcements', icon: '📢', label: 'הודעות' }
   ],
   student: [
     { id: 'home', icon: '🏠', label: 'ראשי' },
     { id: 'homework', icon: '📚', label: 'שיעורי בית' },
+    { id: 'achievements', icon: '🏅', label: 'הישגים' },
     { id: 'leaderboard', icon: '🏆', label: 'טבלה' },
     { id: 'announcements', icon: '📢', label: 'הודעות' }
   ],
@@ -152,8 +154,8 @@ function navigateTo(page) {
   content.innerHTML = '<div class="loading-spinner"><div class="spinner"></div></div>';
 
   const renderers = {
-    teacher: { home: renderTeacherHome, attendance: renderAttendance, behavior: renderBehavior, homework: renderTeacherHomework, announcements: renderAnnouncements },
-    student: { home: renderStudentHome, homework: renderStudentHomework, leaderboard: renderLeaderboard, announcements: renderAnnouncements },
+    teacher: { home: renderTeacherHome, attendance: renderAttendance, behavior: renderBehavior, homework: renderTeacherHomework, messages: renderTeacherMessages, announcements: renderAnnouncements },
+    student: { home: renderStudentHome, homework: renderStudentHomework, achievements: renderAchievements, leaderboard: renderLeaderboard, announcements: renderAnnouncements },
     parent: { home: renderParentHome, messages: renderMessages, announcements: renderAnnouncements },
     admin: { home: renderAdminHome, announcements: renderAnnouncements, reports: renderReports }
   };
@@ -340,13 +342,33 @@ async function renderBehavior(el) {
   const classId = state.user.classId?._id || state.user.classId;
   if (!classId) { el.innerHTML = '<p class="text-center p-4">אין כיתה משויכת</p>'; return; }
 
-  const [students, behaviors] = await Promise.all([
+  const today = new Date().toISOString().split('T')[0];
+  const filterDate = window._bhFilterDate || today;
+  const filterType = window._bhFilterType || '';
+
+  let bhUrl = `/api/behavior?classId=${classId}&date=${filterDate}`;
+  if (filterType) bhUrl += `&type=${filterType}`;
+
+  const [students, behaviors, stats] = await Promise.all([
     api(`/api/classes/${classId}/students`),
-    api(`/api/behavior?classId=${classId}`)
+    api(bhUrl),
+    api(`/api/behavior/stats?classId=${classId}&date=${filterDate}`)
   ]);
 
   el.innerHTML = `
     <h2 class="text-2xl font-bold mb-4">⭐ דיווח התנהגות</h2>
+
+    <!-- Stats Summary -->
+    <div class="card mb-4">
+      <div style="display:flex;justify-content:space-around;text-align:center;padding:0.5rem 0">
+        <div><div style="font-size:1.5rem">🌟</div><div class="font-bold text-green">${stats.positive}</div><div class="text-xs text-gray">חיובי</div></div>
+        <div><div style="font-size:1.5rem">⚠️</div><div class="font-bold text-red">${stats.disruption}</div><div class="text-xs text-gray">הפרעה</div></div>
+        <div><div style="font-size:1.5rem">⏰</div><div class="font-bold" style="color:var(--gold)">${stats.lateness}</div><div class="text-xs text-gray">איחור</div></div>
+        <div><div style="font-size:1.5rem">📊</div><div class="font-bold">${stats.totalPoints > 0 ? '+' : ''}${stats.totalPoints}</div><div class="text-xs text-gray">נקודות</div></div>
+      </div>
+    </div>
+
+    <!-- Report Form -->
     <div class="card">
       <div class="form-group">
         <label>בחירת תלמיד/ה</label>
@@ -372,22 +394,43 @@ async function renderBehavior(el) {
         </div>
       </div>
       <div class="form-group">
+        <label>שיעור (אופציונלי)</label>
+        <select id="bh-period" class="form-input">
+          <option value="">— בחרו שיעור —</option>
+          ${[1,2,3,4,5,6,7,8].map(p => `<option value="${p}">שיעור ${p}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
         <label>הערה (אופציונלי)</label>
         <input type="text" id="bh-note" class="form-input" placeholder="הוסיפו הערה...">
       </div>
       <button class="btn btn-primary btn-full" onclick="submitBehavior()">📝 שליחת דיווח</button>
     </div>
 
+    <!-- Filter & History -->
     <div class="card mt-4">
-      <div class="card-header"><span class="card-title">📋 דיווחים אחרונים</span></div>
-      ${behaviors.slice(0, 10).map(b => `
+      <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.5rem">
+        <span class="card-title">📋 דיווחים</span>
+        <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap">
+          <input type="date" id="bh-filter-date" class="form-input" value="${filterDate}" onchange="window._bhFilterDate=this.value;renderBehavior(document.getElementById('app-content'))" style="width:auto;padding:0.3rem 0.5rem;font-size:0.85rem">
+          <select id="bh-filter-type" class="form-input" onchange="window._bhFilterType=this.value;renderBehavior(document.getElementById('app-content'))" style="width:auto;padding:0.3rem 0.5rem;font-size:0.85rem">
+            <option value=""${!filterType ? ' selected' : ''}>הכל</option>
+            <option value="positive"${filterType === 'positive' ? ' selected' : ''}>🌟 חיובי</option>
+            <option value="disruption"${filterType === 'disruption' ? ' selected' : ''}>⚠️ הפרעה</option>
+            <option value="lateness"${filterType === 'lateness' ? ' selected' : ''}>⏰ איחור</option>
+          </select>
+        </div>
+      </div>
+      ${behaviors.length === 0 ? '<p class="text-center p-4 text-gray">אין דיווחים לתאריך זה</p>' : ''}
+      ${behaviors.map(b => `
         <div class="leaderboard-item">
           <span style="font-size:1.3rem">${b.type === 'positive' ? '🌟' : b.type === 'disruption' ? '⚠️' : '⏰'}</span>
           <div style="flex:1">
             <div class="font-semibold">${b.studentId?.name || 'תלמיד'}</div>
-            <div class="text-xs text-gray">${b.note || ''} • ${formatDate(b.createdAt)}</div>
+            <div class="text-xs text-gray">${b.note || ''} ${b.period ? '• שיעור ' + b.period : ''} • ${formatTime(b.createdAt || b.date)}</div>
           </div>
-          <span class="font-bold ${b.points > 0 ? 'text-green' : 'text-red'}">${b.points > 0 ? '+' : ''}${b.points}</span>
+          <span class="font-bold ${b.points > 0 ? 'text-green' : 'text-red'}" style="margin-left:0.5rem">${b.points > 0 ? '+' : ''}${b.points}</span>
+          <button onclick="deleteBehavior('${b._id}')" style="background:none;border:none;cursor:pointer;font-size:1rem;opacity:0.4;margin-right:0.25rem" title="מחיקת דיווח">🗑️</button>
         </div>
       `).join('')}
     </div>
@@ -397,9 +440,10 @@ async function renderBehavior(el) {
 }
 
 function selectBehavior(btn, type) {
-  document.querySelectorAll('.behavior-btn').forEach(b => b.style.transform = '');
-  btn.style.transform = 'scale(1.05)';
-  btn.style.boxShadow = '0 4px 12px rgba(0,0,0,0.15)';
+  document.querySelectorAll('.behavior-btn').forEach(b => {
+    b.classList.remove('bh-selected');
+  });
+  btn.classList.add('bh-selected');
   window._bhType = type;
 }
 
@@ -407,22 +451,57 @@ async function submitBehavior() {
   if (!window._bhType) return toast('בחרו סוג דיווח', 'error');
   const studentId = document.getElementById('bh-student').value;
   const note = document.getElementById('bh-note').value;
+  const period = document.getElementById('bh-period').value;
   const classId = state.user.classId?._id || state.user.classId;
   try {
-    await api('/api/behavior', { method: 'POST', body: JSON.stringify({ studentId, classId, type: window._bhType, note }) });
+    await api('/api/behavior', { method: 'POST', body: JSON.stringify({ studentId, classId, type: window._bhType, note, period: period ? parseInt(period) : undefined }) });
     toast(window._bhType === 'positive' ? '🌟 דיווח חיובי נשלח!' : '📝 דיווח נשמר', 'success');
     if (window._bhType === 'positive') confetti();
+    window._bhFilterDate = new Date().toISOString().split('T')[0];
+    renderBehavior(document.getElementById('app-content'));
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function deleteBehavior(id) {
+  if (!confirm('למחוק את הדיווח?')) return;
+  try {
+    await api(`/api/behavior/${id}`, { method: 'DELETE' });
+    toast('🗑️ דיווח נמחק', 'success');
     renderBehavior(document.getElementById('app-content'));
   } catch (e) { toast(e.message, 'error'); }
 }
 
 async function renderTeacherHomework(el) {
   const classId = state.user.classId?._id || state.user.classId;
-  let homeworks = [];
-  try { homeworks = await api(`/api/homework?classId=${classId}`); } catch(e) {}
+  let homeworks = [], stats = {};
+  try {
+    [homeworks, stats] = await Promise.all([
+      api(`/api/homework?classId=${classId}`),
+      api(`/api/homework/stats/summary?classId=${classId}`)
+    ]);
+  } catch(e) {}
 
   el.innerHTML = `
     <h2 class="text-2xl font-bold mb-4">📚 שיעורי בית</h2>
+
+    <div class="stats-row">
+      <div class="stat-card blue">
+        <div class="stat-icon">📝</div>
+        <div class="stat-value">${stats.total || 0}</div>
+        <div class="stat-label">משימות</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">✅</div>
+        <div class="stat-value">${stats.submissionRate || 0}%</div>
+        <div class="stat-label">אחוז הגשה</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value">${stats.graded || 0}</div>
+        <div class="stat-label">ציונים</div>
+      </div>
+    </div>
+
     <div class="card">
       <div class="card-header"><span class="card-title">➕ הוספת שיעורי בית</span></div>
       <div class="form-group">
@@ -445,20 +524,85 @@ async function renderTeacherHomework(el) {
       ${homeworks.map(hw => {
         const submitted = hw.submissions?.filter(s => s.status === 'submitted' || s.status === 'graded').length || 0;
         const total = hw.submissions?.length || 0;
+        const pending = total - submitted;
         const pct = total ? Math.round((submitted / total) * 100) : 0;
+        const overdue = new Date(hw.dueDate) < new Date();
         return `
-          <div class="homework-item">
-            <div class="homework-icon">📝</div>
-            <div class="homework-info">
+          <div class="homework-item" style="cursor:pointer" onclick="viewHomeworkDetail('${hw._id}')">
+            <div class="homework-icon">${overdue ? '⏰' : '📝'}</div>
+            <div class="homework-info" style="flex:1">
               <h4>${hw.title}</h4>
-              <p>הגשה עד ${formatDate(hw.dueDate)} • ${submitted}/${total} הגישו</p>
+              <p>הגשה עד ${formatDate(hw.dueDate)} • ${submitted}/${total} הגישו${pending > 0 ? ` • <span style="color:var(--red)">${pending} חסרים</span>` : ''}</p>
               <div class="progress-bar mt-1"><div class="fill" style="width:${pct}%"></div></div>
+            </div>
+            <div style="display:flex;gap:4px;align-items:center">
+              <button class="btn btn-sm" onclick="event.stopPropagation();deleteHomework('${hw._id}')" title="מחיקה">🗑️</button>
             </div>
           </div>
         `;
       }).join('') || '<p class="text-gray text-center p-2">אין שיעורי בית עדיין</p>'}
     </div>
   `;
+}
+
+async function viewHomeworkDetail(hwId) {
+  const el = document.getElementById('app-content');
+  let hw;
+  try { hw = await api(`/api/homework/${hwId}`); } catch(e) { return toast('שגיאה בטעינה', 'error'); }
+
+  const statusLabel = { pending: '⏳ טרם הוגש', submitted: '✅ הוגש', late: '⚠️ באיחור', graded: '⭐ נבדק' };
+  const statusClass = { pending: 'red', submitted: 'green', late: 'gold', graded: 'blue' };
+
+  el.innerHTML = `
+    <button class="btn btn-outline mb-4" onclick="renderTeacherHomework(document.getElementById('app-content'))">← חזרה</button>
+    <h2 class="text-2xl font-bold mb-2">📝 ${hw.title}</h2>
+    <p class="text-gray mb-4">${hw.description || ''} • הגשה עד ${formatDate(hw.dueDate)}</p>
+
+    <div class="card">
+      <div class="card-header"><span class="card-title">📋 הגשות תלמידים</span></div>
+      ${(hw.submissions || []).map(sub => {
+        const name = sub.studentId?.name || 'תלמיד/ה';
+        const avatar = sub.studentId?.avatar || '👤';
+        const sid = sub.studentId?._id || sub.studentId;
+        return `
+          <div class="leaderboard-item" style="flex-wrap:wrap">
+            <span style="font-size:1.3rem">${avatar}</span>
+            <span class="leaderboard-name" style="flex:1">${name}</span>
+            <span class="badge badge-${statusClass[sub.status] || 'gray'}">${statusLabel[sub.status] || sub.status}</span>
+            ${sub.status === 'submitted' || sub.status === 'late' ? `
+              <div style="display:flex;gap:4px;align-items:center;margin-top:4px;width:100%;padding-right:2.5rem">
+                <input type="number" id="grade-${sid}" class="form-input" style="width:80px" placeholder="ציון" min="0" max="100" value="${sub.grade || ''}">
+                <button class="btn btn-sm btn-primary" onclick="gradeSubmission('${hwId}','${sid}')">✅ ציון</button>
+              </div>
+            ` : sub.status === 'graded' ? `
+              <div style="margin-top:4px;width:100%;padding-right:2.5rem;color:var(--gold);font-weight:bold">
+                ציון: ${sub.grade}
+              </div>
+            ` : ''}
+          </div>
+        `;
+      }).join('') || '<p class="text-center text-gray p-2">אין הגשות עדיין</p>'}
+    </div>
+  `;
+}
+
+async function gradeSubmission(hwId, studentId) {
+  const grade = parseInt(document.getElementById(`grade-${studentId}`).value);
+  if (isNaN(grade) || grade < 0 || grade > 100) return toast('ציון חייב להיות בין 0 ל-100', 'error');
+  try {
+    await api(`/api/homework/${hwId}/grade`, { method: 'POST', body: JSON.stringify({ studentId, grade }) });
+    toast(`⭐ ציון ${grade} ניתן!`, 'success');
+    viewHomeworkDetail(hwId);
+  } catch (e) { toast(e.message, 'error'); }
+}
+
+async function deleteHomework(hwId) {
+  if (!confirm('למחוק את שיעורי הבית?')) return;
+  try {
+    await api(`/api/homework/${hwId}`, { method: 'DELETE' });
+    toast('🗑️ שיעורי בית נמחקו', 'success');
+    renderTeacherHomework(document.getElementById('app-content'));
+  } catch (e) { toast(e.message, 'error'); }
 }
 
 async function createHomework() {
@@ -474,57 +618,190 @@ async function createHomework() {
   } catch (e) { toast(e.message, 'error'); }
 }
 
+// ===== TEACHER MESSAGES =====
+async function renderTeacherMessages(el) {
+  let parents = [], messages = [], unread = { count: 0 };
+  try {
+    const classId = state.user.classId?._id || state.user.classId;
+    [parents, messages, unread] = await Promise.all([
+      api(`/api/classes/${classId}/parents`).catch(() => []),
+      api('/api/messages'),
+      api('/api/messages/unread')
+    ]);
+  } catch(e) {}
+
+  // Group messages by conversation partner
+  const convMap = {};
+  messages.forEach(m => {
+    const partnerId = m.fromId?._id === state.user._id ? m.toId?._id : m.fromId?._id;
+    const partnerName = m.fromId?._id === state.user._id ? m.toId?.name : m.fromId?.name;
+    if (!convMap[partnerId]) convMap[partnerId] = { name: partnerName || 'הורה', messages: [], unread: 0 };
+    convMap[partnerId].messages.push(m);
+    if (m.toId?._id === state.user._id && !m.read) convMap[partnerId].unread++;
+  });
+
+  // Also add parents with no messages yet
+  parents.forEach(p => {
+    if (!convMap[p._id]) convMap[p._id] = { name: p.name, messages: [], unread: 0 };
+  });
+
+  if (state._teacherChatWith) {
+    return renderTeacherChat(el, state._teacherChatWith, convMap[state._teacherChatWith]?.name || 'הורה');
+  }
+
+  el.innerHTML = `
+    <h2 class="text-2xl font-bold mb-4">💬 צ'אט עם הורים ${unread.count > 0 ? `<span class="badge badge-red">${unread.count}</span>` : ''}</h2>
+    <div class="card">
+      ${Object.entries(convMap).map(([id, conv]) => {
+        const lastMsg = conv.messages[conv.messages.length - 1];
+        return `
+          <div class="leaderboard-item" style="cursor:pointer" onclick="openTeacherChat('${id}', '${conv.name}')">
+            <span style="font-size:1.3rem">👤</span>
+            <div style="flex:1">
+              <div class="font-bold">${conv.name}</div>
+              <div class="text-xs text-gray">${lastMsg ? lastMsg.body.substring(0, 40) + (lastMsg.body.length > 40 ? '...' : '') : 'לחצו להתחיל שיחה'}</div>
+            </div>
+            ${conv.unread > 0 ? `<span class="badge badge-red">${conv.unread}</span>` : ''}
+            ${lastMsg ? `<span class="text-xs text-gray">${formatTime(lastMsg.createdAt)}</span>` : ''}
+          </div>
+        `;
+      }).join('') || '<p class="text-center text-gray p-4">אין הורים בכיתה עדיין</p>'}
+    </div>
+  `;
+}
+
+function openTeacherChat(userId, name) {
+  state._teacherChatWith = userId;
+  state._teacherChatName = name;
+  renderTeacherMessages(document.getElementById('app-content'));
+}
+
+async function renderTeacherChat(el, userId, name) {
+  let messages = [];
+  try {
+    messages = await api(`/api/messages?withUser=${userId}`);
+    await api(`/api/messages/read/${userId}`, { method: 'PUT' });
+  } catch(e) {}
+
+  el.innerHTML = `
+    <button class="btn btn-outline mb-4" onclick="state._teacherChatWith=null;renderTeacherMessages(document.getElementById('app-content'))">← חזרה</button>
+    <h2 class="text-2xl font-bold mb-4">💬 ${name}</h2>
+    <div class="card">
+      <div class="message-list" id="chat-messages" style="max-height:400px;overflow-y:auto">
+        ${messages.map(m => `
+          <div class="message-bubble ${m.fromId?._id === state.user._id ? 'sent' : ''}">
+            <div class="text-xs font-bold mb-1">${m.fromId?.name || ''}</div>
+            <div>${m.body}</div>
+            <div class="msg-time">${formatTime(m.createdAt)}</div>
+          </div>
+        `).join('') || '<p class="text-center text-gray p-4">אין הודעות עדיין — שלחו הודעה ראשונה!</p>'}
+      </div>
+      <div style="display:flex;gap:8px;margin-top:12px">
+        <input type="text" id="chat-input" class="form-input" style="flex:1" placeholder="כתבו הודעה..." onkeypress="if(event.key==='Enter')sendTeacherMsg('${userId}')">
+        <button class="btn btn-primary" onclick="sendTeacherMsg('${userId}')">📤</button>
+      </div>
+    </div>
+  `;
+  // Scroll to bottom
+  const chatEl = document.getElementById('chat-messages');
+  if (chatEl) chatEl.scrollTop = chatEl.scrollHeight;
+}
+
+async function sendTeacherMsg(toId) {
+  const input = document.getElementById('chat-input');
+  const body = input.value.trim();
+  if (!body) return;
+  try {
+    await api('/api/messages', { method: 'POST', body: JSON.stringify({ toId, body }) });
+    input.value = '';
+    renderTeacherChat(document.getElementById('app-content'), toId, state._teacherChatName || 'הורה');
+  } catch (e) { toast(e.message, 'error'); }
+}
+
 // ===== STUDENT VIEWS =====
 async function renderStudentHome(el) {
   const user = state.user;
-  let achievements = [], homeworks = [];
+  let stats = {}, homeworks = [];
   try {
-    [achievements, homeworks] = await Promise.all([
-      api('/api/achievements'),
+    [stats, homeworks] = await Promise.all([
+      api('/api/achievements/student-stats'),
       api(`/api/homework?classId=${user.classId?._id || user.classId}`)
     ]);
-  } catch(e) {}
+  } catch(e) { stats = { points: user.points || 0, level: 1, levelTitle: 'מתחיל', levelProgress: 0, pointsInLevel: 0, pointsToNext: 30, streaks: user.streaks || {}, achievementCount: 0, totalAchievements: 12, rank: 1, classSize: 1, challenges: [] }; }
 
   const pendingHw = homeworks.filter(h => {
     const sub = h.submissions?.find(s => (s.studentId?._id || s.studentId) === user._id);
     return sub && sub.status === 'pending';
   });
 
+  const rankSuffix = stats.rank === 1 ? '🥇' : stats.rank === 2 ? '🥈' : stats.rank === 3 ? '🥉' : `#${stats.rank}`;
+
   el.innerHTML = `
-    <div class="points-hero">
-      <div class="points-number">${user.points || 0}</div>
-      <div class="points-label">נקודות</div>
-    </div>
-
-    <div class="streak-bar">
-      <div class="streak-icon">🔥</div>
-      <div class="streak-info">
-        <h4>רצף נוכחות</h4>
-        <p>${user.streaks?.attendance || 0} ימים רצופים</p>
+    <div class="student-hero">
+      <div class="hero-avatar">${stats.avatar || user.avatar || '👤'}</div>
+      <div class="hero-name">שלום, ${stats.name || user.name}!</div>
+      <div class="hero-level">
+        <span class="level-badge">Lv.${stats.level}</span>
+        <span class="level-title">${stats.levelTitle}</span>
       </div>
-      <div class="streak-count">${user.streaks?.attendance || 0}</div>
-    </div>
-
-    <div class="streak-bar">
-      <div class="streak-icon">📚</div>
-      <div class="streak-info">
-        <h4>רצף שיעורי בית</h4>
-        <p>${user.streaks?.homework || 0} הגשות רצופות</p>
-      </div>
-      <div class="streak-count">${user.streaks?.homework || 0}</div>
-    </div>
-
-    ${achievements.length > 0 ? `
-      <div class="card mt-4">
-        <div class="card-header"><span class="card-title">🏆 הישגים</span></div>
-        <div class="badges-grid">
-          ${achievements.map(a => `
-            <div class="badge-item">
-              <div class="badge-icon">${a.icon || '🏅'}</div>
-              <div class="badge-name">${a.name}</div>
-            </div>
-          `).join('')}
+      <div class="level-progress-wrap">
+        <div class="level-progress-bar">
+          <div class="level-progress-fill" style="width:${stats.levelProgress}%"></div>
         </div>
+        <div class="level-progress-text">${stats.pointsInLevel}/${stats.pointsToNext} לרמה הבאה</div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-card primary">
+        <div class="stat-icon">⭐</div>
+        <div class="stat-value">${stats.points}</div>
+        <div class="stat-label">נקודות</div>
+      </div>
+      <div class="stat-card gold">
+        <div class="stat-icon">${rankSuffix}</div>
+        <div class="stat-value">${stats.rank}/${stats.classSize}</div>
+        <div class="stat-label">דירוג בכיתה</div>
+      </div>
+      <div class="stat-card green">
+        <div class="stat-icon">🏅</div>
+        <div class="stat-value">${stats.achievementCount}/${stats.totalAchievements}</div>
+        <div class="stat-label">הישגים</div>
+      </div>
+    </div>
+
+    <div class="streaks-section">
+      <div class="streak-bar">
+        <div class="streak-icon">🔥</div>
+        <div class="streak-info">
+          <h4>רצף נוכחות</h4>
+          <p>${stats.streaks.attendance || 0} ימים רצופים</p>
+        </div>
+        <div class="streak-count">${stats.streaks.attendance || 0}</div>
+      </div>
+      <div class="streak-bar">
+        <div class="streak-icon">📚</div>
+        <div class="streak-info">
+          <h4>רצף שיעורי בית</h4>
+          <p>${stats.streaks.homework || 0} הגשות רצופות</p>
+        </div>
+        <div class="streak-count">${stats.streaks.homework || 0}</div>
+      </div>
+    </div>
+
+    ${stats.challenges?.length ? `
+      <div class="card mt-4">
+        <div class="card-header"><span class="card-title">🎯 אתגרים יומיים</span></div>
+        ${stats.challenges.map(c => `
+          <div class="challenge-item ${c.done ? 'done' : ''}">
+            <span class="challenge-icon">${c.icon}</span>
+            <div class="challenge-info">
+              <div class="challenge-title">${c.title}</div>
+              <div class="challenge-reward">+${c.reward} נק׳</div>
+            </div>
+            <span class="challenge-status">${c.done ? '✅' : '⬜'}</span>
+          </div>
+        `).join('')}
       </div>
     ` : ''}
 
@@ -538,11 +815,46 @@ async function renderStudentHome(el) {
               <h4>${h.title}</h4>
               <p>הגשה עד ${formatDate(h.dueDate)}</p>
             </div>
-            <span class="homework-status pending">ממתין</span>
+            <button class="btn btn-sm btn-primary" onclick="submitHomework('${h._id}')">הגשה</button>
           </div>
         `).join('')}
       </div>
     ` : ''}
+  `;
+}
+
+async function renderAchievements(el) {
+  let catalog = [];
+  try { catalog = await api('/api/achievements/catalog'); } catch(e) {}
+
+  const categories = {};
+  catalog.forEach(a => {
+    if (!categories[a.category]) categories[a.category] = [];
+    categories[a.category].push(a);
+  });
+
+  const unlockedCount = catalog.filter(a => a.unlocked).length;
+
+  el.innerHTML = `
+    <h2 class="text-2xl font-bold mb-2">🏅 הישגים</h2>
+    <p class="text-gray mb-4">${unlockedCount} מתוך ${catalog.length} נפתחו</p>
+    <div class="achievements-progress-bar mb-4">
+      <div class="achievements-progress-fill" style="width:${catalog.length ? Math.round(unlockedCount/catalog.length*100) : 0}%"></div>
+    </div>
+    ${Object.entries(categories).map(([cat, items]) => `
+      <div class="card mb-3">
+        <div class="card-header"><span class="card-title">${cat}</span></div>
+        <div class="achievements-grid">
+          ${items.map(a => `
+            <div class="achievement-item ${a.unlocked ? 'unlocked' : 'locked'}">
+              <div class="achievement-icon">${a.icon}</div>
+              <div class="achievement-name">${a.name}</div>
+              <div class="achievement-desc">${a.description}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    `).join('')}
   `;
 }
 
