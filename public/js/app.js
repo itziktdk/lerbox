@@ -147,7 +147,7 @@ function enterApp() {
   document.getElementById('header-name').textContent = state.user.name;
   const roleNames = { teacher: 'מורה', student: 'תלמיד/ה', parent: 'הורה', admin: 'מנהל/ת' };
   document.getElementById('header-role').textContent = roleNames[state.user.role] || state.user.role;
-  document.getElementById('header-avatar').textContent = state.user.avatar || icon('user');
+  document.getElementById('header-avatar').innerHTML = state.user.avatar || icon('user');
   showPage('app');
   buildNav();
   navigateTo('home');
@@ -860,7 +860,7 @@ async function renderStudentHome(el) {
         <div class="card-header"><span class="card-title">${icon("target")} אתגרים יומיים</span></div>
         ${stats.challenges.map(c => `
           <div class="challenge-item ${c.done ? 'done' : ''}">
-            <span class="challenge-icon">${c.icon}</span>
+            <span class="challenge-icon">${icon(c.icon || 'star')}</span>
             <div class="challenge-info">
               <div class="challenge-title">${c.title}</div>
               <div class="challenge-reward">+${c.reward} נק׳</div>
@@ -1020,7 +1020,7 @@ async function renderParentHome(el) {
         ${child.badges?.length ? `
           <div class="badges-grid mt-2">
             ${child.badges.map(b => `
-              <div class="badge-item"><div class="badge-icon">${b.icon || icon('trophy')}</div><div class="badge-name">${b.name}</div></div>
+              <div class="badge-item"><div class="badge-icon">${icon(b.icon || 'trophy')}</div><div class="badge-name">${b.name}</div></div>
             `).join('')}
           </div>
         ` : ''}

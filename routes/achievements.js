@@ -62,9 +62,9 @@ router.get('/student-stats', auth, async (req, res) => {
     }
 
     const challenges = [
-      { id: 'attend', title: 'הגיעו לכל השיעורים היום', icon: '✅', reward: 5, done: (user.streaks?.attendance || 0) > 0 },
-      { id: 'homework', title: 'הגישו שיעורי בית', icon: '📚', reward: 3, done: false },
-      { id: 'positive', title: 'קבלו דיווח חיובי', icon: '🌟', reward: 5, done: positiveBehaviors > 0 }
+      { id: 'attend', title: 'הגיעו לכל השיעורים היום', icon: 'check', reward: 5, done: (user.streaks?.attendance || 0) > 0 },
+      { id: 'homework', title: 'הגישו שיעורי בית', icon: 'book', reward: 3, done: false },
+      { id: 'positive', title: 'קבלו דיווח חיובי', icon: 'sparkles', reward: 5, done: positiveBehaviors > 0 }
     ];
 
     res.json({ points, level, levelTitle, levelProgress, pointsInLevel, pointsToNext,
