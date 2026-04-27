@@ -8,4 +8,7 @@ const classSchema = new mongoose.Schema({
   teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' }
 }, { timestamps: true });
 
+classSchema.index({ schoolId: 1 });
+classSchema.index({ name: 1 });
+
 module.exports = mongoose.model('Class', classSchema);

@@ -96,70 +96,81 @@ router.get('/dashboard', auth, adminOnly, async (req, res) => {
 
 // GET /api/admin/classes — all classes with details
 router.get('/classes', auth, adminOnly, async (req, res) => {
-  const schoolId = req.user.schoolId;
-  const classes = await Class.find({ schoolId }).populate('teacherId', 'name avatar');
-  const result = await Promise.all(classes.map(async (cls) => {
-    const studentCount = await User.countDocuments({ classId: cls._id, role: 'student' });
-    return { ...cls.toObject(), studentCount };
-  }));
-  res.json(result);
+  try {
+    const schoolId = req.user.schoolId;
+    const classes = await Class.find({ schoolId }).populate('teacherId', 'name avatar');
+    const result = await Promise.all(classes.map(async (cls) => {
+      const studentCount = await User.countDocuments({ classId: cls._id, role: 'student' });
+      return { ...cls.toObject(), studentCount };
+    }));
+    res.json(result);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// POST /api/admin/classes — create class
 router.post('/classes', auth, adminOnly, async (req, res) => {
-  const cls = await Class.create({ ...req.body, schoolId: req.user.schoolId });
-  res.json(cls);
+  try {
+    const cls = await Class.create({ ...req.body, schoolId: req.user.schoolId });
+    res.json(cls);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// PUT /api/admin/classes/:id — update class
 router.put('/classes/:id', auth, adminOnly, async (req, res) => {
-  const cls = await Class.findByIdAndUpdate(req.params.id, req.body, { new: true });
-  res.json(cls);
+  try {
+    const cls = await Class.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    res.json(cls);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// DELETE /api/admin/classes/:id — delete class
 router.delete('/classes/:id', auth, adminOnly, async (req, res) => {
-  await Class.findByIdAndDelete(req.params.id);
-  res.json({ ok: true });
+  try {
+    await Class.findByIdAndDelete(req.params.id);
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// GET /api/admin/users — all users with filters
 router.get('/users', auth, adminOnly, async (req, res) => {
-  const filter = { schoolId: req.user.schoolId };
-  if (req.query.role) filter.role = req.query.role;
-  if (req.query.classId) filter.classId = req.query.classId;
-  const users = await User.find(filter).select('-otpCode -otpExpires -password').populate('classId', 'name').sort('name');
-  res.json(users);
+  try {
+    const filter = { schoolId: req.user.schoolId };
+    if (req.query.role) filter.role = req.query.role;
+    if (req.query.classId) filter.classId = req.query.classId;
+    const users = await User.find(filter).select('-otpCode -otpExpires -password').populate('classId', 'name').sort('name');
+    res.json(users);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// POST /api/admin/users — create user
 router.post('/users', auth, adminOnly, async (req, res) => {
-  const user = await User.create({ ...req.body, schoolId: req.user.schoolId });
-  res.json(user);
+  try {
+    const user = await User.create({ ...req.body, schoolId: req.user.schoolId });
+    res.json(user);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// PUT /api/admin/users/:id — update user
 router.put('/users/:id', auth, adminOnly, async (req, res) => {
-  const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }).select('-otpCode -otpExpires -password');
-  res.json(user);
+  try {
+    const user = await User.findByIdAndUpdate(req.params.id, req.body, { new: true }).select('-otpCode -otpExpires -password');
+    res.json(user);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// DELETE /api/admin/users/:id — delete user
 router.delete('/users/:id', auth, adminOnly, async (req, res) => {
-  await User.findByIdAndDelete(req.params.id);
-  res.json({ ok: true });
+  try {
+    await User.findByIdAndDelete(req.params.id);
+    res.json({ ok: true });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// GET /api/admin/school — school settings
 router.get('/school', auth, adminOnly, async (req, res) => {
-  const school = await School.findById(req.user.schoolId);
-  res.json(school);
+  try {
+    const school = await School.findById(req.user.schoolId);
+    res.json(school);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
-// PUT /api/admin/school — update school settings
 router.put('/school', auth, adminOnly, async (req, res) => {
-  const school = await School.findByIdAndUpdate(req.user.schoolId, req.body, { new: true });
-  res.json(school);
+  try {
+    const school = await School.findByIdAndUpdate(req.user.schoolId, req.body, { new: true });
+    res.json(school);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 module.exports = router;

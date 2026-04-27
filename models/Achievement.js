@@ -8,4 +8,8 @@ const achievementSchema = new mongoose.Schema({
   earnedAt: { type: Date, default: Date.now }
 });
 
+achievementSchema.index({ earnedAt: -1 });
+achievementSchema.index({ schoolId: 1 });
+achievementSchema.index({ studentId: 1 });
+
 module.exports = mongoose.model('Achievement', achievementSchema);

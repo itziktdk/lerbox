@@ -10,4 +10,7 @@ const announcementSchema = new mongoose.Schema({
   audience: { type: String, enum: ['all', 'class', 'parents', 'students', 'teachers'], default: 'all' }
 }, { timestamps: true });
 
+announcementSchema.index({ createdAt: -1 });
+announcementSchema.index({ schoolId: 1 });
+
 module.exports = mongoose.model('Announcement', announcementSchema);

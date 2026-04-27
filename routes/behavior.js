@@ -5,22 +5,24 @@ const auth = require('../middleware/auth');
 
 // Get behavior records with filters
 router.get('/', auth, async (req, res) => {
-  const filter = {};
-  if (req.query.classId) filter.classId = req.query.classId;
-  if (req.query.studentId) filter.studentId = req.query.studentId;
-  if (req.query.date) {
-    const d = new Date(req.query.date);
-    const start = new Date(d); start.setHours(0,0,0,0);
-    const end = new Date(d); end.setHours(23,59,59,999);
-    filter.date = { $gte: start, $lt: end };
-  }
-  if (req.query.type) filter.type = req.query.type;
-  const records = await Behavior.find(filter)
-    .populate('studentId', 'name avatar')
-    .populate('teacherId', 'name')
-    .sort('-date')
-    .limit(200);
-  res.json(records);
+  try {
+    const filter = {};
+    if (req.query.classId) filter.classId = req.query.classId;
+    if (req.query.studentId) filter.studentId = req.query.studentId;
+    if (req.query.date) {
+      const d = new Date(req.query.date);
+      const start = new Date(d); start.setHours(0,0,0,0);
+      const end = new Date(d); end.setHours(23,59,59,999);
+      filter.date = { $gte: start, $lt: end };
+    }
+    if (req.query.type) filter.type = req.query.type;
+    const records = await Behavior.find(filter)
+      .populate('studentId', 'name avatar')
+      .populate('teacherId', 'name')
+      .sort('-date')
+      .limit(200);
+    res.json(records);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 // Get stats for a class (today or by date)

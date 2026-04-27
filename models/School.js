@@ -11,4 +11,6 @@ const schoolSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
+schoolSchema.index({ slug: 1 });
+
 module.exports = mongoose.model('School', schoolSchema);

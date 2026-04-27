@@ -5,16 +5,18 @@ const auth = require('../middleware/auth');
 
 // Get attendance for class/date/period
 router.get('/', auth, async (req, res) => {
-  const { classId, date, period } = req.query;
-  const filter = {};
-  if (classId) filter.classId = classId;
-  if (date) {
-    const d = new Date(date);
-    filter.date = { $gte: new Date(d.setHours(0,0,0,0)), $lt: new Date(d.setHours(23,59,59,999)) };
-  }
-  if (period) filter.period = parseInt(period);
-  const records = await Attendance.find(filter).populate('records.studentId', 'name avatar').sort('-date');
-  res.json(records);
+  try {
+    const { classId, date, period } = req.query;
+    const filter = {};
+    if (classId) filter.classId = classId;
+    if (date) {
+      const d = new Date(date);
+      filter.date = { $gte: new Date(d.setHours(0,0,0,0)), $lt: new Date(d.setHours(23,59,59,999)) };
+    }
+    if (period) filter.period = parseInt(period);
+    const records = await Attendance.find(filter).populate('records.studentId', 'name avatar').sort('-date');
+    res.json(records);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 // Save attendance
@@ -62,17 +64,19 @@ router.post('/', auth, async (req, res) => {
 
 // Attendance stats for class
 router.get('/stats/:classId', auth, async (req, res) => {
-  const records = await Attendance.find({ classId: req.params.classId });
-  let total = 0, present = 0, late = 0, absent = 0;
-  records.forEach(r => {
-    r.records.forEach(s => {
-      total++;
-      if (s.status === 'present') present++;
-      else if (s.status === 'late') late++;
-      else absent++;
+  try {
+    const records = await Attendance.find({ classId: req.params.classId });
+    let total = 0, present = 0, late = 0, absent = 0;
+    records.forEach(r => {
+      r.records.forEach(s => {
+        total++;
+        if (s.status === 'present') present++;
+        else if (s.status === 'late') late++;
+        else absent++;
+      });
     });
-  });
-  res.json({ total, present, late, absent, rate: total ? Math.round((present / total) * 100) : 0 });
+    res.json({ total, present, late, absent, rate: total ? Math.round((present / total) * 100) : 0 });
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 module.exports = router;

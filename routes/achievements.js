@@ -20,19 +20,23 @@ const ACHIEVEMENT_DEFS = [
 ];
 
 router.get('/', auth, async (req, res) => {
-  const filter = {};
-  if (req.query.studentId) filter.studentId = req.query.studentId;
-  else if (req.user.role === 'student') filter.studentId = req.user._id;
-  const items = await Achievement.find(filter).sort('-earnedAt');
-  res.json(items);
+  try {
+    const filter = {};
+    if (req.query.studentId) filter.studentId = req.query.studentId;
+    else if (req.user.role === 'student') filter.studentId = req.user._id;
+    const items = await Achievement.find(filter).sort('-earnedAt');
+    res.json(items);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 router.get('/catalog', auth, async (req, res) => {
-  const studentId = req.query.studentId || (req.user.role === 'student' ? req.user._id : null);
-  if (!studentId) return res.json(ACHIEVEMENT_DEFS.map(d => ({ ...d, unlocked: false })));
-  const earned = await Achievement.find({ studentId }).select('type');
-  const earnedTypes = new Set(earned.map(a => a.type));
-  res.json(ACHIEVEMENT_DEFS.map(d => ({ ...d, unlocked: earnedTypes.has(d.type) })));
+  try {
+    const studentId = req.query.studentId || (req.user.role === 'student' ? req.user._id : null);
+    if (!studentId) return res.json(ACHIEVEMENT_DEFS.map(d => ({ ...d, unlocked: false })));
+    const earned = await Achievement.find({ studentId }).select('type');
+    const earnedTypes = new Set(earned.map(a => a.type));
+    res.json(ACHIEVEMENT_DEFS.map(d => ({ ...d, unlocked: earnedTypes.has(d.type) })));
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 router.get('/student-stats', auth, async (req, res) => {

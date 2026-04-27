@@ -8,4 +8,5 @@ const messageSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 messageSchema.index({ toId: 1, read: 1 });
+messageSchema.index({ createdAt: -1 });
 module.exports = mongoose.model('Message', messageSchema);

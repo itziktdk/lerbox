@@ -4,10 +4,12 @@ const User = require('../models/User');
 const auth = require('../middleware/auth');
 
 router.get('/', auth, async (req, res) => {
-  const filter = {};
-  if (req.query.classId) filter.classId = req.query.classId;
-  const hw = await Homework.find(filter).populate('teacherId', 'name').sort('-dueDate');
-  res.json(hw);
+  try {
+    const filter = {};
+    if (req.query.classId) filter.classId = req.query.classId;
+    const hw = await Homework.find(filter).populate('teacherId', 'name').sort('-dueDate');
+    res.json(hw);
+  } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 router.post('/', auth, async (req, res) => {
