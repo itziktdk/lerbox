@@ -144,6 +144,8 @@ function logout() {
 }
 
 function enterApp() {
+  // Show post-login splash
+  showPostLoginSplash();
   document.getElementById('header-name').textContent = state.user.name;
   const roleNames = { teacher: 'מורה', student: 'תלמיד/ה', parent: 'הורה', admin: 'מנהל/ת' };
   document.getElementById('header-role').textContent = roleNames[state.user.role] || state.user.role;
@@ -151,6 +153,33 @@ function enterApp() {
   showPage('app');
   buildNav();
   navigateTo('home');
+}
+
+function showPostLoginSplash() {
+  // Remove existing if any
+  const old = document.getElementById('post-login-splash');
+  if (old) old.remove();
+  const roleEmojis = { teacher: '👩‍🏫', student: '👨‍🎓', parent: '👨‍👩‍👧', admin: '🏫' };
+  const roleNames = { teacher: 'מורה', student: 'תלמיד/ה', parent: 'הורה', admin: 'מנהל/ת' };
+  const splash = document.createElement('div');
+  splash.id = 'post-login-splash';
+  splash.innerHTML = `
+    <div class="pls-content">
+      <div class="pls-emoji">${roleEmojis[state.user.role] || '📦'}</div>
+      <div class="pls-greeting">שלום, ${state.user.name}!</div>
+      <div class="pls-role">${roleNames[state.user.role] || state.user.role}</div>
+      <div class="pls-dots"><span></span><span></span><span></span></div>
+    </div>
+  `;
+  document.body.appendChild(splash);
+}
+
+function dismissPostLoginSplash() {
+  const s = document.getElementById('post-login-splash');
+  if (s) {
+    s.classList.add('pls-fade-out');
+    setTimeout(() => s.remove(), 500);
+  }
 }
 
 // ===== NAVIGATION =====
@@ -224,7 +253,14 @@ function navigateTo(page) {
 
   const render = renderers[state.user.role]?.[page];
   if (render) {
-    try { render(content); } catch(e) { content.innerHTML = errorStateHTML(e.message, `navigateTo('${page}')`); }
+    try {
+      const result = render(content);
+      if (result && typeof result.then === 'function') {
+        result.then(() => dismissPostLoginSplash()).catch(() => dismissPostLoginSplash());
+      } else {
+        dismissPostLoginSplash();
+      }
+    } catch(e) { dismissPostLoginSplash(); content.innerHTML = errorStateHTML(e.message, `navigateTo('${page}')`); }
   } else {
     content.innerHTML = emptyStateHTML(icon('wrench'), 'בבנייה', 'העמוד הזה עוד לא מוכן');
   }
